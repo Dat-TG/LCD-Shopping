@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/auth/services/auth_service.dart';
 
 class AuthScreen extends StatefulWidget {
   static const String routeName = '/auth-screen';
@@ -21,6 +22,16 @@ class _AuthScreenState extends State<AuthScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final authService = AuthService();
+
+  void signUpUser() {
+    authService.signUpUser(
+        context: context,
+        email: _emailController.text,
+        password: _passwordController.text,
+        name: _nameController.text);
+  }
 
   @override
   void dispose() {
@@ -94,7 +105,11 @@ class _AuthScreenState extends State<AuthScreen> {
                         ),
                         CustomButton(
                           text: 'Sign Up',
-                          onTap: () {},
+                          onTap: () {
+                            if (signUpFormKey.currentState!.validate()) {
+                              signUpUser();
+                            }
+                          },
                         )
                       ],
                     )),

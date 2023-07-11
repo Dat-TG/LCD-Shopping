@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      obscureText: (hint == 'Password') ? true : false,
       decoration: InputDecoration(
         hintText: hint,
         border: const OutlineInputBorder(
@@ -18,7 +19,12 @@ class CustomTextField extends StatelessWidget {
           borderSide: BorderSide(color: Colors.black38),
         ),
       ),
-      validator: (value) {},
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Enter your $hint';
+        }
+        return null;
+      },
     );
   }
 }

@@ -42,3 +42,12 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# local env files
+server/.env
+server/.env*.local
+
+# dependencies
+server/node_modules
+server/.pnp
+server/.pnp.js
