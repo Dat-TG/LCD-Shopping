@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
+import 'package:shopping/providers/user_provider.dart';
 import 'package:shopping/router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
