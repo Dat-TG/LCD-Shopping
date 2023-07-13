@@ -4,6 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const jwt = require('jsonwebtoken');
+const auth = require('../middlewares/auth');
 // Sign Up
 router.post('/signup', async (req, res) => {
     try {
@@ -43,4 +44,30 @@ router.post('/signin', async (req, res) => {
         res.status(500).json({ error: e.message });
     }
 })
+
+// Check token
+router.post('/tokenIsValid', async (req, res) => {
+    try {
+        const token = req.header('x-auth-token');
+        if (!token) return res.json(false);
+        const isValid = jwt.verify(token, 'secret');
+        if (!isValid) return res.json(false);
+        const user = await User.findById(isValid.id);
+        if (!user) return res.json(false);
+        res.json(true);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+})
+
+// Get user data
+router.get('/', auth, async (req, res) => {
+    try {
+        const user = await User.findById(req.user);
+        res.json({ ...user._doc, token: req.token });
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+})
+
 module.exports = router;
