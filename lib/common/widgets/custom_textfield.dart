@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? hint;
-  const CustomTextField({super.key, required this.controller, this.hint});
+  final int? maxLines;
+  const CustomTextField(
+      {super.key, required this.controller, this.hint, this.maxLines = 1});
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -21,6 +23,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: widget.controller,
+      maxLines: widget.maxLines,
       obscureText: (widget.hint == 'Password') ? !_isPasswordVisible : false,
       decoration: InputDecoration(
           hintText: widget.hint,
