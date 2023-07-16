@@ -46,6 +46,8 @@ app.*.map.json
 # local env files
 server/.env
 server/.env*.local
+.env
+.env*.local
 
 # dependencies
 server/node_modules

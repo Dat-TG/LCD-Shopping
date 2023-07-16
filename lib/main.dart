@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/bottom_bar.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
 import 'package:shopping/features/auth/services/auth_service.dart';
-import 'package:shopping/features/home/screens/home_screen.dart';
 import 'package:shopping/providers/user_provider.dart';
 import 'package:shopping/router.dart';
 
-void main() {
+Future<void> main() async {
+  await dotenv.load();
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (context) => UserProvider())],
     child: const MyApp(),
