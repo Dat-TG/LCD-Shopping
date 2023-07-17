@@ -57,6 +57,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.21.0"
+  cloudinary_sdk:
+    dependency: "direct main"
+    description:
+      name: cloudinary_sdk
+      sha256: d7b0c295b814e78f5541c4e30d3195c63afb471bce7f03bc0e4572972854d4e1
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.0.0+1"
   collection:
     dependency: transitive
     description:
@@ -65,6 +73,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.17.1"
+  crypto:
+    dependency: transitive
+    description:
+      name: crypto
+      sha256: ff625774173754681d66daaf4a448684fb04b78f902da9cb3d308c19cc5e8bab
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.3"
   cupertino_icons:
     dependency: "direct main"
     description:
