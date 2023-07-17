@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
 import 'package:shopping/features/home/widgets/carousel_images.dart';
 import 'package:shopping/features/home/widgets/deal_of_the_day.dart';
 import 'package:shopping/features/home/widgets/top_categories.dart';
-import 'package:shopping/providers/user_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -18,7 +16,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context).user;
     return Scaffold(
         appBar: PreferredSize(
             preferredSize: const Size.fromHeight(60),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/bottom_bar.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
+import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
 import 'package:shopping/features/home/screens/home_screen.dart';
@@ -24,6 +25,9 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
           builder: (context) => const AddProductScreen(),
           settings: routeSettings);
+    case AdminScreen.routeName:
+      return MaterialPageRoute(
+          builder: (context) => const AdminScreen(), settings: routeSettings);
     default:
       return MaterialPageRoute(
           builder: (context) => const Scaffold(

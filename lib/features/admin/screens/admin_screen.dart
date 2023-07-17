@@ -4,6 +4,7 @@ import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import '../../../constants/global_variables.dart';
 
 class AdminScreen extends StatefulWidget {
+  static const String routeName = '/admin';
   const AdminScreen({super.key});
 
   @override
