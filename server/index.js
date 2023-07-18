@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 // import routers
 const authRouter = require('./routes/auth');
 const adminRouter=require('./routes/admin');
+const productRouter=require('./routes/product');
 
 // connections
 mongoose.connect(process.env.DB).then(() => {
@@ -23,6 +24,7 @@ const PORT = 3000;
 // CLIENT --> middleware --> SERVER --> CLIENT
 app.use('/user', authRouter);
 app.use('/admin', adminRouter);
+app.use('/product', productRouter);
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server is running at port ${PORT}`);

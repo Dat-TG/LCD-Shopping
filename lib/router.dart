@@ -4,6 +4,7 @@ import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
+import 'package:shopping/features/home/screens/category_screen.dart';
 import 'package:shopping/features/home/screens/home_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
@@ -28,6 +29,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case AdminScreen.routeName:
       return MaterialPageRoute(
           builder: (context) => const AdminScreen(), settings: routeSettings);
+    case CategoryScreen.routeName:
+      final String category = routeSettings.arguments as String;
+      return MaterialPageRoute(
+          builder: (context) => CategoryScreen(category: category),
+          settings: routeSettings);
     default:
       return MaterialPageRoute(
           builder: (context) => const Scaffold(
