@@ -4,6 +4,7 @@ import 'package:shopping/features/home/widgets/address_box.dart';
 import 'package:shopping/features/home/widgets/carousel_images.dart';
 import 'package:shopping/features/home/widgets/deal_of_the_day.dart';
 import 'package:shopping/features/home/widgets/top_categories.dart';
+import 'package:shopping/features/search/screens/search_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -14,6 +15,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  void naviagteToSearchScreen(String searchQuery) {
+    Navigator.pushNamed(context, SearchScreen.routeName,
+        arguments: searchQuery);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           borderRadius: BorderRadius.circular(7),
                           elevation: 1,
                           child: TextFormField(
+                            onFieldSubmitted: naviagteToSearchScreen,
                             decoration: InputDecoration(
                                 hintText: 'Search LCDShopping',
                                 hintStyle: const TextStyle(
