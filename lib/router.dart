@@ -6,7 +6,10 @@ import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
 import 'package:shopping/features/home/screens/category_screen.dart';
 import 'package:shopping/features/home/screens/home_screen.dart';
+import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
+
+import 'models/product.dart';
 
 Route<dynamic> generateRoute(RouteSettings routeSettings) {
   switch (routeSettings.name) {
@@ -39,6 +42,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       final String searchQuery = routeSettings.arguments as String;
       return MaterialPageRoute(
           builder: (context) => SearchScreen(searchQuery: searchQuery),
+          settings: routeSettings);
+    case ProductDetailsScreen.routeName:
+      final Product product = routeSettings.arguments as Product;
+      return MaterialPageRoute(
+          builder: (context) => ProductDetailsScreen(
+                product: product,
+              ),
           settings: routeSettings);
     default:
       return MaterialPageRoute(

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/home/services/home_services.dart';
+import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/models/product.dart';
 
 class CategoryScreen extends StatefulWidget {
@@ -73,34 +74,41 @@ class _CategoryScreenState extends State<CategoryScreen> {
                                 mainAxisSpacing: 10),
                         itemBuilder: (context, index) {
                           final product = productList![index];
-                          return Column(
-                            children: [
-                              SizedBox(
-                                height: 130,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    border: Border.all(
-                                        color: Colors.black12, width: 0.5),
-                                  ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Image.network(product.images[0]),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, ProductDetailsScreen.routeName,
+                                  arguments: product);
+                            },
+                            child: Column(
+                              children: [
+                                SizedBox(
+                                  height: 130,
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(
+                                          color: Colors.black12, width: 0.5),
+                                    ),
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Image.network(product.images[0]),
+                                    ),
                                   ),
                                 ),
-                              ),
-                              Container(
-                                alignment: Alignment.topLeft,
-                                padding: const EdgeInsets.only(
-                                    left: 10, right: 10, top: 5),
-                                child: Text(
-                                  product.name,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              )
-                            ],
+                                Container(
+                                  alignment: Alignment.topLeft,
+                                  padding: const EdgeInsets.only(
+                                      left: 10, right: 10, top: 5),
+                                  child: Text(
+                                    product.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              ],
+                            ),
                           );
                         }),
           ),

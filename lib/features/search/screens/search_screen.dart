@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
+import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/search/services/search_services.dart';
 import 'package:shopping/features/search/widgets/searched_product.dart';
 import 'package:shopping/models/product.dart';
@@ -119,10 +120,18 @@ class _SearchScreenState extends State<SearchScreen> {
                           itemCount: productList!.length,
                           itemBuilder: (context, index) {
                             final product = productList![index];
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              child: SearchedProduct(
-                                product: product,
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, ProductDetailsScreen.routeName,
+                                    arguments: product);
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: SearchedProduct(
+                                  product: product,
+                                ),
                               ),
                             );
                           }),
