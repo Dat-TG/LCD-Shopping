@@ -46,6 +46,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     }
   }
 
+  void addToCart() {
+    productDetailsServices.addToCart(context: context, product: widget.product);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -196,7 +200,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 text: 'Add To Cart',
                 backgroundColor: const Color.fromRGBO(254, 216, 19, 1),
                 textColor: Colors.black,
-                onTap: () {},
+                onTap: addToCart,
               ),
             ),
             Container(

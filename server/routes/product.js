@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Product = require('../models/product');
+const {Product} = require('../models/product');
 const auth = require('../middlewares/auth');
 
 // Get all products of a category
