@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping/features/cart/services/cart_services.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
 import 'package:shopping/models/product.dart';
 import 'package:shopping/providers/user_provider.dart';
@@ -14,9 +15,19 @@ class CartItem extends StatefulWidget {
 
 class _CartItemState extends State<CartItem> {
   final productServices = ProductDetailsServices();
+  final cartServices = CartServices();
 
   void increaseQuantity(Product product) {
     productServices.addToCart(context: context, product: product);
+  }
+
+  void updateQuantity(Product product, int quantity) {
+    cartServices.changeQuantityCartItem(
+        context: context, product: product, quantity: quantity);
+  }
+
+  void removeItem(Product product) {
+    cartServices.removeItemFromCart(context: context, product: product);
   }
 
   @override
@@ -80,9 +91,9 @@ class _CartItemState extends State<CartItem> {
           ),
         ),
         Container(
-          margin: const EdgeInsets.all(10),
+          margin: const EdgeInsets.only(left: 20, top: 10, bottom: 20),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                 decoration: BoxDecoration(
@@ -91,13 +102,20 @@ class _CartItemState extends State<CartItem> {
                     color: Colors.black12),
                 child: Row(
                   children: [
-                    Container(
-                      width: 25,
-                      height: 25,
-                      alignment: Alignment.center,
-                      child: const Icon(
-                        Icons.remove,
-                        size: 18,
+                    InkWell(
+                      onTap: () => {
+                        if ((productCart['quantity'] as int) > 1)
+                          updateQuantity(
+                              product, (productCart['quantity'] as int) - 1)
+                      },
+                      child: Container(
+                        width: 25,
+                        height: 25,
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.remove,
+                          size: 18,
+                        ),
                       ),
                     ),
                     Container(
@@ -124,7 +142,26 @@ class _CartItemState extends State<CartItem> {
                     ),
                   ],
                 ),
-              )
+              ),
+              InkWell(
+                onTap: () => removeItem(product),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  width: 25,
+                  height: 25,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black12, width: 1.5),
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.black26,
+                  ),
+                  child: const Icon(
+                    Icons.delete_outline_outlined,
+                    size: 20,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ],
           ),
         )
