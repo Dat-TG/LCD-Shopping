@@ -46,6 +46,7 @@ dependencies:
   flutter_dotenv: ^5.1.0
   cloudinary_sdk: ^5.0.0+1
   flutter_rating_bar: ^4.0.1
+  pay: ^1.1.1
 
 dev_dependencies:
   flutter_test:
@@ -73,6 +74,8 @@ flutter:
   assets:
     - assets/images/
     - .env
+    - assets/applepay.json
+    - assets/gpay.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

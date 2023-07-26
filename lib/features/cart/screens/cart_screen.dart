@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/cart/widgets/cart_item.dart';
 import 'package:shopping/features/cart/widgets/cart_subtotal.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
@@ -21,9 +22,21 @@ class _CartScreenState extends State<CartScreen> {
         arguments: searchQuery);
   }
 
+  void naviagteToAddressScreen(int sum) {
+    Navigator.pushNamed(
+      context,
+      AddressScreen.routeName,
+      arguments: sum.toString(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = context.watch<UserProvider>().user;
+    int sum = 0;
+    user.cart
+        .map((e) => sum += e['quantity'] * e['product']['price'] as int)
+        .toList();
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
@@ -96,7 +109,7 @@ class _CartScreenState extends State<CartScreen> {
               padding: const EdgeInsets.all(8.0),
               child: CustomButton(
                 text: "Proceed to Buy (${user.cart.length}) items",
-                onTap: () {},
+                onTap: () => naviagteToAddressScreen(sum),
                 backgroundColor: Colors.yellow[600],
                 textColor: Colors.black,
               ),

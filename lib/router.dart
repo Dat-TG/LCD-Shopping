@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/bottom_bar.dart';
+import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
@@ -50,6 +51,14 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
                 product: product,
               ),
           settings: routeSettings);
+    case AddressScreen.routeName:
+      var totalAmount = routeSettings.arguments as String;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => AddressScreen(
+          totalAmount: totalAmount,
+        ),
+      );
     default:
       return MaterialPageRoute(
           builder: (context) => const Scaffold(

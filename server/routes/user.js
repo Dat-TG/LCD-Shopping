@@ -83,4 +83,17 @@ router.patch('/change-quantity-cart-item', auth, async (req, res) => {
     }
 })
 
+// save user address
+router.post("/save-user-address", auth, async (req, res) => {
+    try {
+      const { address } = req.body;
+      let user = await User.findById(req.user);
+      user.address = address;
+      user = await user.save();
+      res.json(user);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
 module.exports = router;
