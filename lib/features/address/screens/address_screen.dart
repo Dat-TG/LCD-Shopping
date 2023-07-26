@@ -74,11 +74,11 @@ class _AddressScreenState extends State<AddressScreen> {
       addressServices.saveUserAddress(
           context: context, address: addressToBeUsed);
     }
-    /*addressServices.placeOrder(
+    addressServices.placeOrder(
       context: context,
       address: addressToBeUsed,
       totalSum: double.parse(widget.totalAmount),
-    );*/
+    );
   }
 
   void onCashResult() {
@@ -89,11 +89,11 @@ class _AddressScreenState extends State<AddressScreen> {
       addressServices.saveUserAddress(
           context: context, address: addressToBeUsed);
     }
-    /*addressServices.placeOrder(
+    addressServices.placeOrder(
       context: context,
       address: addressToBeUsed,
       totalSum: double.parse(widget.totalAmount),
-    );*/
+    );
   }
 
   void payPressed(String addressFromProvider) {
