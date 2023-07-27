@@ -136,4 +136,15 @@ router.post("/order", auth, async (req, res) => {
     }
   });
 
+
+// get all orders
+router.get("/all-orders", auth, async (req, res) => {
+    try {
+      const orders=await Order.find({userId: req.user});
+      res.json(orders);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
 module.exports = router;

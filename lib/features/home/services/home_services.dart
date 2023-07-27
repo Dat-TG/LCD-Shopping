@@ -62,7 +62,9 @@ class HomeServices {
             response: res,
             context: context,
             onSuccess: () {
-              product = Product.fromJson(res.body);
+              if (res.body.isNotEmpty) {
+                product = Product.fromJson(res.body);
+              }
             });
       }
     } catch (e) {

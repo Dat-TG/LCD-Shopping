@@ -24,7 +24,9 @@ class _DealOfTheDayState extends State<DealOfTheDay> {
 
   void fetchDealOfDay() async {
     product = await homeServices.fetchDealOfTheDay(context: context);
-    mainImg = product!.images[0];
+    if (product != null && product!.name.isNotEmpty) {
+      mainImg = product!.images[0];
+    }
     setState(() {});
   }
 
