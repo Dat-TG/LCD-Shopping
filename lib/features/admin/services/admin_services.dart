@@ -11,6 +11,7 @@ import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping/features/admin/screens/admin_screen.dart';
+import 'package:shopping/models/order.dart';
 import 'package:shopping/providers/user_provider.dart';
 
 import '../../../models/product.dart';
@@ -137,5 +138,38 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  // Get orders
+  Future<List<Order>> getOrders(BuildContext context, int status) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Order> orderList = [];
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/admin/get-orders?status=$status'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token,
+      });
+      if (context.mounted) {
+        httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              orderList.add(
+                Order.fromJson(
+                  jsonEncode(
+                    jsonDecode(res.body)[i],
+                  ),
+                ),
+              );
+            }
+          },
+        );
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return orderList;
   }
 }

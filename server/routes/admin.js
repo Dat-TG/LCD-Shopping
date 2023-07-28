@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const admin = require('../middlewares/admin');
 const {Product} = require('../models/product');
+const Order=require('../models/order');
 
 // Add product
 router.post('/add-product', admin, async (req, res) => {
@@ -37,5 +38,19 @@ router.delete('/product/:id', admin, async(req, res)=>{
         res.status(500).json({ error: e.message });
     }
 })
+
+// Get orders
+router.get("/get-orders", admin, async (req, res) => {
+    try {
+      const status=req.query.status;
+      let orders=null;
+      if (status>-1) orders = await Order.find({status: status});
+      else orders=await Order.find({});
+      res.json(orders);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+  
 
 module.exports = router;

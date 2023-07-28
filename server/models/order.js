@@ -30,6 +30,10 @@ const orderSchema=mongoose.Schema({
         type: Number,
         default: 0,
     },
+    // 0: Order Success
+    // 1: To Ship
+    // 2: To Receive
+    // 3: Completed
 });
 const Order=mongoose.model('Order', orderSchema);
 module.exports=Order;

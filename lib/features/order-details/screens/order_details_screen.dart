@@ -225,19 +225,29 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 },
                 steps: [
                   Step(
-                    title: const Text('Pending'),
+                    title: const Text('Order Success'),
                     content: const Text(
-                      'Your order is yet to be delivered',
+                      'Your order is going to be packed',
                     ),
-                    isActive: currentStep >= 0,
-                    state: currentStep >= 0
+                    isActive: currentStep == 0,
+                    state: currentStep == 0
                         ? StepState.complete
                         : StepState.indexed,
                   ),
                   Step(
-                    title: const Text('Completed'),
+                    title: const Text('To Ship'),
                     content: const Text(
-                      'Your order has been delivered, you are yet to sign.',
+                      'Your order is yet to be delivered',
+                    ),
+                    isActive: currentStep > 0,
+                    state: currentStep > 0
+                        ? StepState.complete
+                        : StepState.indexed,
+                  ),
+                  Step(
+                    title: const Text('To Receive'),
+                    content: const Text(
+                      'Your order is being delivered.',
                     ),
                     isActive: currentStep > 1,
                     state: currentStep > 1
@@ -245,22 +255,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                         : StepState.indexed,
                   ),
                   Step(
-                    title: const Text('Received'),
+                    title: const Text('Completed'),
                     content: const Text(
                       'Your order has been delivered and signed by you.',
                     ),
                     isActive: currentStep > 2,
                     state: currentStep > 2
-                        ? StepState.complete
-                        : StepState.indexed,
-                  ),
-                  Step(
-                    title: const Text('Delivered'),
-                    content: const Text(
-                      'Your order has been delivered and signed by you!',
-                    ),
-                    isActive: currentStep >= 3,
-                    state: currentStep >= 3
                         ? StepState.complete
                         : StepState.indexed,
                   ),

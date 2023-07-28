@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/admin/screens/admin_home_screen.dart';
+import 'package:shopping/features/admin/screens/admin_orders.dart';
 
 class AdminBottomBar extends StatefulWidget {
   static const String routeName = '/actual-home-admin';
@@ -18,7 +19,7 @@ class _AdminBottomBarState extends State<AdminBottomBar> {
   List<Widget> pages = [
     const AdminHomeScreen(),
     const Center(child: Text('Analysis')),
-    const Center(child: Text('Order'))
+    const AdminOrders()
   ];
 
   void goToPage(int page) {
