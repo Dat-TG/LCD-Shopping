@@ -33,6 +33,22 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         arguments: product);
   }
 
+  // !!! ONLY FOR ADMIN!!!
+  void changeOrderStatus(int status) {
+    if (status < 3) {
+      adminServices.changeOrderStatus(
+        context: context,
+        status: status + 1,
+        order: widget.order,
+        onSuccess: () {
+          setState(() {
+            currentStep += 1;
+          });
+        },
+      );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -216,9 +232,12 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 currentStep: currentStep,
                 controlsBuilder: (context, details) {
                   if (user.type == 'admin') {
-                    return const CustomButton(
-                      text: 'Done',
-                      // onTap: () => changeOrderStatus(details.currentStep),
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: CustomButton(
+                        text: 'Done',
+                        onTap: () => changeOrderStatus(details.currentStep),
+                      ),
                     );
                   }
                   return const SizedBox();
