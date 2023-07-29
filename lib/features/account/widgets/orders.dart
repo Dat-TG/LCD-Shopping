@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/account/screens/see_all_orders.dart';
 import 'package:shopping/features/account/services/account_services.dart';
 import 'package:shopping/features/account/widgets/single_product.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
@@ -33,6 +34,13 @@ class _OrdersState extends State<Orders> {
         arguments: order);
   }
 
+  void naviagteToAllOrders() {
+    Navigator.pushNamed(
+      context,
+      SeeAllOrders.routeName,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return orders == null
@@ -54,11 +62,14 @@ class _OrdersState extends State<Orders> {
                   ),
                   Container(
                     padding: const EdgeInsets.only(right: 15),
-                    child: Text(
-                      'See all',
-                      style: TextStyle(
-                          color: GlobalVariables.selectedNavBarColor,
-                          fontWeight: FontWeight.w400),
+                    child: InkWell(
+                      onTap: naviagteToAllOrders,
+                      child: Text(
+                        'See all',
+                        style: TextStyle(
+                            color: GlobalVariables.selectedNavBarColor,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                   )
                 ],

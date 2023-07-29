@@ -147,4 +147,18 @@ router.get("/all-orders", auth, async (req, res) => {
     }
   });
 
+// Get orders by status
+router.get("/get-orders", auth, async (req, res) => {
+    try {
+      const status=req.query.status;
+      const userId=req.user;
+      let orders=null;
+      if (status>-1) orders = await Order.find({status: status, userId: userId});
+      else orders=await Order.find({userId: userId});
+      res.json(orders);
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+
 module.exports = router;

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/bottom_bar.dart';
+import 'package:shopping/features/account/screens/see_all_orders.dart';
 import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/screens/admin_screen.dart';
@@ -68,6 +69,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
         builder: (context) => OrderDetailsScreen(
           order: order,
         ),
+      );
+    case SeeAllOrders.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const SeeAllOrders(),
       );
     default:
       return MaterialPageRoute(
