@@ -19,9 +19,23 @@ class _AdminOrdersState extends State<AdminOrders> {
   List<Order>? orders;
   final AdminServices adminServices = AdminServices();
 
+  @override
+  void initState() {
+    super.initState();
+    fetchOrders(status);
+  }
+
   void fetchOrders(int status) async {
     orders = await adminServices.getOrders(context, status);
     setState(() {});
+  }
+
+  void chooseStatus(int val) async {
+    setState(() {
+      status = val;
+      orders = null;
+    });
+    fetchOrders(status);
   }
 
   void navigateToOrderDetails(Order order) {
@@ -30,8 +44,12 @@ class _AdminOrdersState extends State<AdminOrders> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    fetchOrders(status);
     return Scaffold(
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(
@@ -61,11 +79,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          orders = null;
-                          status = -1;
-                        });
+                      onTap: () async {
+                        chooseStatus(-1);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -93,11 +108,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          orders = null;
-                          status = 0;
-                        });
+                      onTap: () async {
+                        chooseStatus(0);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -125,11 +137,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          orders = null;
-                          status = 1;
-                        });
+                      onTap: () async {
+                        chooseStatus(1);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -157,11 +166,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          orders = null;
-                          status = 2;
-                        });
+                      onTap: () async {
+                        chooseStatus(2);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
@@ -189,11 +195,8 @@ class _AdminOrdersState extends State<AdminOrders> {
                       ),
                     ),
                     InkWell(
-                      onTap: () {
-                        setState(() {
-                          orders = null;
-                          status = 3;
-                        });
+                      onTap: () async {
+                        chooseStatus(3);
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(

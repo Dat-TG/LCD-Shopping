@@ -229,6 +229,7 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
               ),
               child: Stepper(
+                physics: const ClampingScrollPhysics(),
                 currentStep: currentStep,
                 controlsBuilder: (context, details) {
                   if (user.type == 'admin') {
@@ -248,8 +249,8 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                     content: const Text(
                       'Your order is going to be packed',
                     ),
-                    isActive: currentStep == 0,
-                    state: currentStep == 0
+                    isActive: currentStep >= 0,
+                    state: currentStep >= 0
                         ? StepState.complete
                         : StepState.indexed,
                   ),
