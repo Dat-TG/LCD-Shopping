@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/order.dart';
@@ -31,6 +32,10 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
   void navigateToProductDetails(Product product) {
     Navigator.pushNamed(context, ProductDetailsScreen.routeName,
         arguments: product);
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   // !!! ONLY FOR ADMIN!!!
@@ -110,11 +115,14 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                 ),
                 Container(
                   color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.mic,
-                      size: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.mic,
+                        size: 25,
+                      ),
+                      onPressed: naviagteToSpeechScreen,
                     ),
                   ),
                 )

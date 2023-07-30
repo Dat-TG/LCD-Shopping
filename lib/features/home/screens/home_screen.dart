@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
 import 'package:shopping/features/home/widgets/carousel_images.dart';
 import 'package:shopping/features/home/widgets/deal_of_the_day.dart';
@@ -18,6 +19,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void naviagteToSearchScreen(String searchQuery) {
     Navigator.pushNamed(context, SearchScreen.routeName,
         arguments: searchQuery);
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   @override
@@ -74,11 +79,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   Container(
                     color: Colors.transparent,
-                    child: const Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10),
-                      child: Icon(
-                        Icons.mic,
-                        size: 25,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: IconButton(
+                        icon: const Icon(
+                          Icons.mic,
+                          size: 25,
+                        ),
+                        onPressed: naviagteToSpeechScreen,
                       ),
                     ),
                   )

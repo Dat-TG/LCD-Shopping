@@ -48,6 +48,9 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   pay: ^1.1.1
   intl: ^0.18.0
+  speech_to_text: ^6.3.0
+  highlight_text: ^1.6.0
+  avatar_glow: ^2.0.2
 
 dev_dependencies:
   flutter_test:

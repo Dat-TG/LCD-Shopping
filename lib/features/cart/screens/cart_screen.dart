@@ -5,6 +5,7 @@ import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/cart/widgets/cart_item.dart';
 import 'package:shopping/features/cart/widgets/cart_subtotal.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/providers/user_provider.dart';
@@ -28,6 +29,10 @@ class _CartScreenState extends State<CartScreen> {
       AddressScreen.routeName,
       arguments: sum.toString(),
     );
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   @override
@@ -89,11 +94,14 @@ class _CartScreenState extends State<CartScreen> {
                 ),
                 Container(
                   color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.mic,
-                      size: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.mic,
+                        size: 25,
+                      ),
+                      onPressed: naviagteToSpeechScreen,
                     ),
                   ),
                 )

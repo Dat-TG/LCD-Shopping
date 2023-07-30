@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/search/services/search_services.dart';
@@ -29,6 +30,10 @@ class _SearchScreenState extends State<SearchScreen> {
   void naviagteToSearchScreen(String searchQuery) {
     Navigator.pushReplacementNamed(context, SearchScreen.routeName,
         arguments: searchQuery);
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   @override
@@ -92,11 +97,14 @@ class _SearchScreenState extends State<SearchScreen> {
                 ),
                 Container(
                   color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.mic,
-                      size: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.mic,
+                        size: 25,
+                      ),
+                      onPressed: naviagteToSpeechScreen,
                     ),
                   ),
                 )

@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/account/services/account_services.dart';
-import 'package:shopping/features/admin/services/admin_services.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/order.dart';
@@ -43,6 +43,10 @@ class _SeeAllOrdersState extends State<SeeAllOrders> {
   void navigateToOrderDetails(Order order) {
     Navigator.pushNamed(context, OrderDetailsScreen.routeName,
         arguments: order);
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   @override
@@ -108,11 +112,14 @@ class _SeeAllOrdersState extends State<SeeAllOrders> {
                 ),
                 Container(
                   color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.mic,
-                      size: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.mic,
+                        size: 25,
+                      ),
+                      onPressed: naviagteToSpeechScreen,
                     ),
                   ),
                 )

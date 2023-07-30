@@ -62,7 +62,7 @@ class _OrdersState extends State<Orders> {
                   ),
                   Container(
                     padding: const EdgeInsets.only(right: 15),
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: naviagteToAllOrders,
                       child: Text(
                         'See all',

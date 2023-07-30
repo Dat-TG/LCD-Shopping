@@ -8,6 +8,7 @@ import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
 import 'package:shopping/features/home/screens/category_screen.dart';
 import 'package:shopping/features/home/screens/home_screen.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
@@ -74,6 +75,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => const SeeAllOrders(),
+      );
+    case SpeechScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const SpeechScreen(),
       );
     default:
       return MaterialPageRoute(

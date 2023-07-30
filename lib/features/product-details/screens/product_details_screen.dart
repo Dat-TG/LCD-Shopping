@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/common/widgets/stars.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/product.dart';
@@ -30,6 +31,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   void naviagteToSearchScreen(String searchQuery) {
     Navigator.pushReplacementNamed(context, SearchScreen.routeName,
         arguments: searchQuery);
+  }
+
+  void naviagteToSpeechScreen() {
+    Navigator.pushNamed(context, SpeechScreen.routeName);
   }
 
   void calculate() {
@@ -111,11 +116,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 Container(
                   color: Colors.transparent,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
-                    child: Icon(
-                      Icons.mic,
-                      size: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: IconButton(
+                      icon: const Icon(
+                        Icons.mic,
+                        size: 25,
+                      ),
+                      onPressed: naviagteToSpeechScreen,
                     ),
                   ),
                 )
