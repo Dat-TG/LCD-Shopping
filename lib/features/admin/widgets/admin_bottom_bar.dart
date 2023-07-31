@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/admin/screens/admin_analytics.dart';
 import 'package:shopping/features/admin/screens/admin_home_screen.dart';
 import 'package:shopping/features/admin/screens/admin_orders.dart';
 
@@ -18,7 +19,7 @@ class _AdminBottomBarState extends State<AdminBottomBar> {
 
   List<Widget> pages = [
     const AdminHomeScreen(),
-    const Center(child: Text('Analysis')),
+    const AdminAnalytics(),
     const AdminOrders()
   ];
 

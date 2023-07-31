@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloudinary_public/cloudinary_public.dart';
@@ -15,6 +16,7 @@ import 'package:shopping/models/order.dart';
 import 'package:shopping/providers/user_provider.dart';
 
 import '../../../models/product.dart';
+import '../models/sales.dart';
 
 class AdminServices {
   String cloudName = dotenv.get('CLOUD_NAME');
@@ -204,5 +206,41 @@ class AdminServices {
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  Future<Map<String, dynamic>> getEarnings(BuildContext context) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    List<Sales> sales = [];
+    double totalEarning = 0;
+    try {
+      http.Response res =
+          await http.get(Uri.parse('$uri/admin/analytics'), headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.user.token,
+      });
+      if (context.mounted) {
+        httpErrorHandle(
+          response: res,
+          context: context,
+          onSuccess: () {
+            var response = jsonDecode(res.body);
+            totalEarning = response['totalEarnings'] + .0;
+            sales = [
+              Sales('Mobiles', response['mobileEarnings'] + .0),
+              Sales('Essentials', response['essentialEarnings'] + .0),
+              Sales('Books', response['booksEarnings'] + .0),
+              Sales('Appliances', response['applianceEarnings'] + .0),
+              Sales('Fashion', response['fashionEarnings'] + .0),
+            ];
+          },
+        );
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return {
+      'sales': sales,
+      'totalEarnings': totalEarning,
+    };
   }
 }
