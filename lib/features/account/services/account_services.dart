@@ -2,12 +2,15 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shopping/constants/errors_handling.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
 import 'package:shopping/models/order.dart';
 import 'package:shopping/providers/user_provider.dart';
 import 'package:http/http.dart' as http;
+
+import '../../auth/screens/auth_screen.dart';
 
 class AccountServices {
   // get all orders
@@ -73,5 +76,23 @@ class AccountServices {
       showSnackBar(context, e.toString());
     }
     return orderList;
+  }
+
+  // Log out
+  void logOut(BuildContext context) async {
+    try {
+      SharedPreferences sharedPreferences =
+          await SharedPreferences.getInstance();
+      await sharedPreferences.setString('x-auth-token', '');
+      if (context.mounted) {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AuthScreen.routeName,
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shopping/features/account/services/account_services.dart';
 import 'package:shopping/features/account/widgets/account_button.dart';
 
 class TopButtons extends StatefulWidget {
@@ -9,6 +10,7 @@ class TopButtons extends StatefulWidget {
 }
 
 class _TopButtonsState extends State<TopButtons> {
+  final AccountServices accountServices = AccountServices();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -24,7 +26,8 @@ class _TopButtonsState extends State<TopButtons> {
         ),
         Row(
           children: [
-            AccountButton(text: 'Logout', onTap: () {}),
+            AccountButton(
+                text: 'Logout', onTap: () => accountServices.logOut(context)),
             AccountButton(text: 'Your Wish List', onTap: () {}),
           ],
         )
