@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -7,6 +8,7 @@ import 'package:shopping/common/widgets/bottom_bar.dart';
 import 'package:shopping/constants/errors_handling.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
+import 'package:shopping/features/account/screens/account_screen.dart';
 import 'package:shopping/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping/providers/user_provider.dart';
@@ -105,6 +107,40 @@ class AuthService {
         }
       }
     } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
+
+  // edit information
+  void editInformation(
+      {required BuildContext context,
+      required String email,
+      required String address,
+      required String name}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      User user = userProvider.user
+          .copyWith(address: address, email: email, name: name);
+      http.Response res = await http.patch(
+          Uri.parse('$uri/user/edit-information'),
+          body: user.toJson(),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token,
+          });
+      if (context.mounted) {
+        httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () {
+              showSnackBar(context, 'Edit account successful');
+              userProvider.setUser(user.toJson());
+              Navigator.pushNamedAndRemoveUntil(
+                  context, AccountScreen.routeName, (route) => false);
+            });
+      }
+    } catch (e) {
+      print(e.toString());
       showSnackBar(context, e.toString());
     }
   }

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/account/widgets/account_info.dart';
 import 'package:shopping/features/account/widgets/below_appbar.dart';
 import 'package:shopping/features/account/widgets/orders.dart';
 import 'package:shopping/features/account/widgets/top_buttons.dart';
 
 class AccountScreen extends StatefulWidget {
+  static const String routeName = '/account-screen';
   const AccountScreen({super.key});
 
   @override
@@ -49,18 +51,24 @@ class _AccountScreenState extends State<AccountScreen> {
               ],
             ),
           )),
-      body: const Column(
-        children: [
-          BelowAppBar(),
-          SizedBox(
-            height: 10,
-          ),
-          TopButtons(),
-          SizedBox(
-            height: 20,
-          ),
-          Orders()
-        ],
+      body: const SingleChildScrollView(
+        child: Column(
+          children: [
+            BelowAppBar(),
+            SizedBox(
+              height: 10,
+            ),
+            TopButtons(),
+            SizedBox(
+              height: 20,
+            ),
+            Orders(),
+            SizedBox(
+              height: 20,
+            ),
+            AccountInfo()
+          ],
+        ),
       ),
     );
   }

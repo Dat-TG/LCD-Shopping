@@ -60,6 +60,24 @@ router.post('/tokenIsValid', async (req, res) => {
     }
 })
 
+// Edit Information
+router.patch('/edit-information', auth, async (req, res) => {
+    try {
+        const { name, email, address } = req.body;
+        let user = await User.findById(req.user);
+        if (!user) {
+            return res.status(400).json({'msg': 'User not found'});
+        }
+        user.name=name;
+        user.email=email;
+        user.address=address;
+        user = await user.save();
+        res.json(user);
+    } catch (e) {
+        res.status(500).json({ error: e.message });
+    }
+})
+
 // Get user data
 router.get('/', auth, async (req, res) => {
     try {

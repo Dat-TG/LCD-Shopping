@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/bottom_bar.dart';
+import 'package:shopping/features/account/screens/account_screen.dart';
+import 'package:shopping/features/account/screens/edit_account_screen.dart';
 import 'package:shopping/features/account/screens/see_all_orders.dart';
 import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
@@ -80,6 +82,22 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => const SpeechScreen(),
+      );
+    case EditAccountScreen.routeName:
+      final EditAccountScreenArguments args =
+          routeSettings.arguments as EditAccountScreenArguments;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => EditAccountScreen(
+          address: args.address,
+          email: args.email,
+          name: args.name,
+        ),
+      );
+    case AccountScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const AccountScreen(),
       );
     default:
       return MaterialPageRoute(
