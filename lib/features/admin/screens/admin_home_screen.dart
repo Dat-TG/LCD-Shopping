@@ -4,6 +4,7 @@ import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/account/widgets/single_product.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
+import 'package:shopping/features/home/services/home_services.dart';
 import 'package:shopping/models/product.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -14,8 +15,10 @@ class AdminHomeScreen extends StatefulWidget {
 }
 
 class _AdminHomeScreenState extends State<AdminHomeScreen> {
+  int choice = 0;
   List<Product>? products;
-  final adminServices = AdminServices();
+  final AdminServices adminServices = AdminServices();
+  final HomeServices homeServices = HomeServices();
   @override
   void initState() {
     super.initState();
@@ -23,7 +26,16 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
   }
 
   fetchAllProducts() async {
-    products = await adminServices.fetchAllProducts(context);
+    setState(() {
+      products = null;
+    });
+    if (choice == 0) {
+      products = await adminServices.fetchAllProducts(context);
+    } else {
+      products = await homeServices.fetchProductsByCategory(
+          context: context,
+          category: GlobalVariables.categoryImages[choice - 1]['title'] ?? '');
+    }
     setState(() {});
   }
 
@@ -89,61 +101,149 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return products == null
-        ? const Loader()
-        : Scaffold(
-            body: products!.isEmpty
-                ? const Center(
-                    child: Text('There are not any products'),
-                  )
-                : GridView.builder(
-                    padding: const EdgeInsets.only(top: 10),
-                    itemCount: products!.length,
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      final productData = products![index];
-                      return Column(
-                        children: [
-                          SizedBox(
-                              height: 140,
-                              child: SingleProduct(img: productData.images[0])),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    productData.name,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 2,
-                                  ),
-                                ),
-                                IconButton(
-                                    onPressed: () => showAlertDialog(
-                                        context,
-                                        () => deleteProduct(productData, index),
-                                        productData),
-                                    icon: const Icon(Icons.delete_outline))
-                              ],
-                            ),
-                          )
-                        ],
-                      );
-                    }),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, AddProductScreen.routeName);
-              },
-              tooltip: 'Add a product',
-              child: const Icon(
-                Icons.add,
-              ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-            floatingActionButtonLocation:
-                FloatingActionButtonLocation.centerFloat,
-          );
+            Container(
+              height: 70,
+              padding: const EdgeInsets.symmetric(
+                horizontal: 5,
+              ),
+              color: Colors.white,
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: GlobalVariables.categoryImages.length,
+                  itemExtent: 75,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        setState(() {
+                          if (choice != index + 1) {
+                            choice = index + 1;
+                          } else {
+                            choice = 0;
+                          }
+                        });
+                        fetchAllProducts();
+                      },
+                      child: DecoratedBox(
+                        decoration: (choice == index + 1)
+                            ? BoxDecoration(
+                                border: Border.all(
+                                  color: Colors.black12,
+                                  width: 1,
+                                ),
+                                color: GlobalVariables.secondaryColor,
+                                borderRadius: BorderRadius.circular(10),
+                              )
+                            : const BoxDecoration(),
+                        child: Column(
+                          children: [
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 10,
+                                vertical: 5,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(50),
+                                child: Image.asset(
+                                  GlobalVariables.categoryImages[index]
+                                      ['image']!,
+                                  fit: BoxFit.cover,
+                                  width: 40,
+                                  height: 40,
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: Text(
+                                GlobalVariables.categoryImages[index]['title']!,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                  color: (choice == index + 1
+                                      ? Colors.white
+                                      : Colors.black),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+            products == null
+                ? const Loader()
+                : products!.isEmpty
+                    ? const Center(
+                        child: Text('There are not any products'),
+                      )
+                    : Padding(
+                        padding: const EdgeInsets.only(top: 20),
+                        child: SizedBox(
+                          height: MediaQuery.of(context).size.height - 230,
+                          child: GridView.builder(
+                              itemCount: products!.length,
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2),
+                              itemBuilder: (context, index) {
+                                final productData = products![index];
+                                return Column(
+                                  children: [
+                                    SizedBox(
+                                        height: 140,
+                                        child: SingleProduct(
+                                            img: productData.images[0])),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 10, right: 5),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              productData.name,
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 2,
+                                            ),
+                                          ),
+                                          IconButton(
+                                              onPressed: () => showAlertDialog(
+                                                  context,
+                                                  () => deleteProduct(
+                                                      productData, index),
+                                                  productData),
+                                              icon: const Icon(
+                                                  Icons.delete_outline))
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                );
+                              }),
+                        ),
+                      ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, AddProductScreen.routeName);
+        },
+        tooltip: 'Add a product',
+        child: const Icon(
+          Icons.add,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
   }
 }
