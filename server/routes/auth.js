@@ -72,7 +72,8 @@ router.patch('/edit-information', auth, async (req, res) => {
         user.email=email;
         user.address=address;
         user = await user.save();
-        res.json(user);
+        const token = jwt.sign({ id: user._id }, 'secret');
+        res.json({token, ...user._doc});
     } catch (e) {
         res.status(500).json({ error: e.message });
     }

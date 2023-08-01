@@ -132,15 +132,19 @@ class AuthService {
         httpErrorHandle(
             response: res,
             context: context,
-            onSuccess: () {
-              showSnackBar(context, 'Edit account successful');
-              userProvider.setUser(user.toJson());
-              Navigator.pushNamedAndRemoveUntil(
-                  context, AccountScreen.routeName, (route) => false);
+            onSuccess: () async {
+              showSnackBar(context, 'Edit account information successful');
+              SharedPreferences pref = await SharedPreferences.getInstance();
+              await pref.setString(
+                  'x-auth-token', jsonDecode(res.body)['token']);
+              userProvider.setUser(res.body);
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, BottomBar.routeName, (route) => false);
+              }
             });
       }
     } catch (e) {
-      print(e.toString());
       showSnackBar(context, e.toString());
     }
   }
