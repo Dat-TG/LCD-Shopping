@@ -6,6 +6,7 @@ import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
 import 'package:shopping/features/admin/widgets/menu_product.dart';
 import 'package:shopping/features/home/services/home_services.dart';
+import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/models/product.dart';
 
 class AdminHomeScreen extends StatefulWidget {
@@ -219,7 +220,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                             ),
                                           ),
                                           MenuProduct(
-                                              onPreview: () {},
+                                              onPreview: () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  ProductDetailsScreen
+                                                      .routeName,
+                                                  arguments: productData,
+                                                );
+                                              },
                                               onEdit: () {},
                                               onDelete: () => showAlertDialog(
                                                   context,
