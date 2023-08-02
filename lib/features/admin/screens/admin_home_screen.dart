@@ -3,6 +3,7 @@ import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/account/widgets/single_product.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
+import 'package:shopping/features/admin/screens/edit_product_screen.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
 import 'package:shopping/features/admin/widgets/menu_product.dart';
 import 'package:shopping/features/home/services/home_services.dart';
@@ -228,7 +229,13 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                                   arguments: productData,
                                                 );
                                               },
-                                              onEdit: () {},
+                                              onEdit: () {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  EditProductScreen.routeName,
+                                                  arguments: productData,
+                                                );
+                                              },
                                               onDelete: () => showAlertDialog(
                                                   context,
                                                   () => deleteProduct(

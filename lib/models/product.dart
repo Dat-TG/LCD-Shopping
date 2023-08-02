@@ -56,4 +56,26 @@ class Product {
 
   factory Product.fromJson(String source) =>
       Product.fromMap(json.decode(source));
+
+  Product copyWith({
+    String? name,
+    String? description,
+    double? price,
+    int? quantity,
+    String? category,
+    List<String>? images,
+    String? id,
+    List<Rating>? ratings,
+  }) {
+    return Product(
+      name: name ?? this.name,
+      description: description ?? this.description,
+      price: price ?? this.price,
+      quantity: quantity ?? this.quantity,
+      category: category ?? this.category,
+      images: images ?? this.images,
+      id: id ?? this.id,
+      ratings: ratings ?? this.ratings,
+    );
+  }
 }

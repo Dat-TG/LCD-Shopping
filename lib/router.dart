@@ -6,6 +6,7 @@ import 'package:shopping/features/account/screens/see_all_orders.dart';
 import 'package:shopping/features/address/screens/address_screen.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/screens/admin_screen.dart';
+import 'package:shopping/features/admin/screens/edit_product_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
 import 'package:shopping/features/home/screens/category_screen.dart';
@@ -98,6 +99,12 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => const AccountScreen(),
+      );
+    case EditProductScreen.routeName:
+      final Product product = routeSettings.arguments as Product;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => EditProductScreen(product: product),
       );
     default:
       return MaterialPageRoute(

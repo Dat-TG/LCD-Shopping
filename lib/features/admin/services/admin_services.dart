@@ -243,4 +243,53 @@ class AdminServices {
       'totalEarnings': totalEarning,
     };
   }
+
+  void editProduct(
+      {required BuildContext context,
+      required Product product,
+      required List<File> images,
+      required List<String> removeOldImages}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    final cloudinary1 = cloudinarySDK.Cloudinary.full(
+      apiKey: apiKey,
+      apiSecret: apiSecret,
+      cloudName: cloudName,
+    );
+    try {
+      final cloudinary = CloudinaryPublic(cloudName, uploadPreset);
+      for (int i = 0; i < images.length; i++) {
+        CloudinaryResponse res = await cloudinary.uploadFile(
+            CloudinaryFile.fromFile(images[i].path,
+                folder: 'LCDShopping/products/${product.name}'));
+        product.images.add(res.secureUrl);
+      }
+      final response = await cloudinary1.deleteResources(
+          urls: removeOldImages,
+          resourceType: cloudinarySDK.CloudinaryResourceType.image);
+      if (response.isSuccessful) {
+        Map<String, dynamic> deleted = response
+            .deleted!; //in deleted Map you will find all the public ids and the status 'deleted'
+      }
+      http.Response res = await http.patch(Uri.parse('$uri/admin/edit-product'),
+          body: product.toJson(),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.token
+          });
+      if (context.mounted) {
+        httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () async {
+              showSnackBar(context, 'Product edited successful');
+              if (context.mounted) {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, AdminScreen.routeName, (route) => false);
+              }
+            });
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

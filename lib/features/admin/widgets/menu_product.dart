@@ -29,11 +29,6 @@ class _MenuProductState extends State<MenuProduct> {
     return PopupMenuButton<MenuProductOptions>(
       offset: const Offset(0, -140),
       initialValue: selectedMenu,
-      onCanceled: () {
-        setState(() {
-          selectedMenu = null;
-        });
-      },
       // Callback that sets the selected popup menu item.
       onSelected: (MenuProductOptions item) {
         setState(() {
@@ -43,6 +38,8 @@ class _MenuProductState extends State<MenuProduct> {
           widget.onDelete();
         } else if (selectedMenu == MenuProductOptions.preview) {
           widget.onPreview();
+        } else if (selectedMenu == MenuProductOptions.edit) {
+          widget.onEdit();
         }
       },
       itemBuilder: (BuildContext context) =>

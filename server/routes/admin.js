@@ -18,6 +18,27 @@ router.post('/add-product', admin, async (req, res) => {
   }
 })
 
+// Edit product
+router.patch('/edit-product', admin, async (req, res) => {
+  try {
+    const data = req.body;
+    let product = await Product.findById(data.id);
+    if (!product) {
+      return res.status(400).json({msg: 'Product not found'});
+    }
+    product.name = data.name;
+    product.quantity=data.quantity;
+    product.price=data.price;
+    product.images=data.images;
+    product.description=data.description;
+    product.category=data.category;
+    product=await product.save();
+    res.json(product);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+})
+
 // Get all products
 router.get('/get-products', admin, async (req, res) => {
   try {
