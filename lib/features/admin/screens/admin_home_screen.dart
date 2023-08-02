@@ -4,6 +4,7 @@ import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/account/widgets/single_product.dart';
 import 'package:shopping/features/admin/screens/add_product_screen.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
+import 'package:shopping/features/admin/widgets/menu_product.dart';
 import 'package:shopping/features/home/services/home_services.dart';
 import 'package:shopping/models/product.dart';
 
@@ -38,6 +39,16 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
     }
     setState(() {});
   }
+
+  void deleteProduct(Product product, int index) => {
+        adminServices.deleteProduct(
+            context: context,
+            product: product,
+            onSuccess: () {
+              products!.removeAt(index);
+              setState(() {});
+            })
+      };
 
   void showAlertDialog(
       BuildContext context, VoidCallback onConfirm, Product product) {
@@ -88,16 +99,6 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
       },
     );
   }
-
-  void deleteProduct(Product product, int index) => {
-        adminServices.deleteProduct(
-            context: context,
-            product: product,
-            onSuccess: () {
-              products!.removeAt(index);
-              setState(() {});
-            })
-      };
 
   @override
   Widget build(BuildContext context) {
@@ -179,7 +180,9 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                   }),
             ),
             products == null
-                ? const Loader()
+                ? SizedBox(
+                    height: MediaQuery.of(context).size.height - 230,
+                    child: const Loader())
                 : products!.isEmpty
                     ? const Center(
                         child: Text('There are not any products'),
@@ -215,14 +218,14 @@ class _AdminHomeScreenState extends State<AdminHomeScreen> {
                                               maxLines: 2,
                                             ),
                                           ),
-                                          IconButton(
-                                              onPressed: () => showAlertDialog(
+                                          MenuProduct(
+                                              onPreview: () {},
+                                              onEdit: () {},
+                                              onDelete: () => showAlertDialog(
                                                   context,
                                                   () => deleteProduct(
                                                       productData, index),
-                                                  productData),
-                                              icon: const Icon(
-                                                  Icons.delete_outline))
+                                                  productData))
                                         ],
                                       ),
                                     )

@@ -159,6 +159,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             item,
                             fit: BoxFit.contain,
                             height: 200,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/image_not_available.png',
+                                height: 200,
+                                fit: BoxFit.contain,
+                              );
+                            },
                           ));
                 }).toList(),
                 options: CarouselOptions(
