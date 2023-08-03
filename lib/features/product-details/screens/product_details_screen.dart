@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
+import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/common/widgets/stars.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
@@ -25,6 +26,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double myRating = 0;
   double totalRating = 0;
   bool isValid = false;
+  final TextEditingController _contentController = TextEditingController();
 
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
@@ -231,19 +233,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               height: 5,
             ),
             (isValid)
-                ? Column(
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          "Rate The Product",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
+                ? Padding(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            "Rate The Product",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
-                      ),
-                      RatingBar.builder(
+                        RatingBar.builder(
                           initialRating: myRating,
                           minRating: 1,
                           allowHalfRating: true,
@@ -252,21 +256,35 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                           itemPadding:
                               const EdgeInsets.symmetric(horizontal: 4),
                           itemBuilder: (context, _) => const Icon(
-                                Icons.star,
-                                color: GlobalVariables.secondaryColor,
-                              ),
+                            Icons.star,
+                            color: GlobalVariables.secondaryColor,
+                          ),
                           onRatingUpdate: (rating) {
+                            setState(() {
+                              myRating = rating;
+                            });
+                          },
+                        ),
+                        CustomTextField(
+                          controller: _contentController,
+                          hint: 'Write your comment',
+                          maxLines: 3,
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        CustomButton(
+                          text: 'Send Review',
+                          onTap: () {
                             productDetailsServices.rateProduct(
                                 context: context,
                                 product: widget.product,
-                                rating: rating);
-                            totalRating = totalRating - myRating + rating;
-                            myRating = rating;
-                            avgRating =
-                                totalRating / widget.product.ratings!.length;
-                            setState(() {});
-                          })
-                    ],
+                                rating: myRating,
+                                content: _contentController.text);
+                          },
+                        )
+                      ],
+                    ),
                   )
                 : const SizedBox(),
           ],

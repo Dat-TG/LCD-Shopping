@@ -7,8 +7,11 @@ const ratingSchema = mongoose.Schema({
     rating: {
         type: Number,
         require: true
+    },
+    content: {
+        type: String,
+        default: ''
     }
-
 })
 
 // const Rating = mongoose.model('Rating', ratingSchema);

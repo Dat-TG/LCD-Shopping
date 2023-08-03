@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:shopping/constants/errors_handling.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
+import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/models/product.dart';
 import 'package:shopping/models/user.dart';
 import 'package:shopping/providers/user_provider.dart';
@@ -39,21 +40,33 @@ class ProductDetailsServices {
     }
   }
 
-  void rateProduct(
-      {required BuildContext context,
-      required Product product,
-      required double rating}) async {
+  void rateProduct({
+    required BuildContext context,
+    required Product product,
+    required double rating,
+    required String content,
+  }) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
     try {
       http.Response res = await http.post(Uri.parse('$uri/product/rating'),
-          body: jsonEncode({'id': product.id, 'rating': rating}),
+          body: jsonEncode(
+              {'id': product.id, 'rating': rating, 'content': content}),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8',
             'x-auth-token': userProvider.token
           });
       if (context.mounted) {
         httpErrorHandle(
-            response: res, context: context, onSuccess: () async {});
+            response: res,
+            context: context,
+            onSuccess: () {
+              showSnackBar(context, 'Review product successfully');
+              Navigator.pushReplacementNamed(
+                context,
+                ProductDetailsScreen.routeName,
+                arguments: Product.fromJson(res.body),
+              );
+            });
       }
     } catch (e) {
       showSnackBar(context, e.toString());
