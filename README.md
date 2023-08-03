@@ -1,7 +1,7 @@
-# LCDShopping
+# LCD-Shopping
 
-Full Stack Shopping App base on Amazon along with Admin Panel
-The app is under heavy development
+- Full Stack Shopping App base on Amazon along with Admin Panel
+- The app is under heavy development
 
 ## Current Features
 - Email & Password Authentication
@@ -10,7 +10,9 @@ The app is under heavy development
 - Searching Products
 - Filtering Products (Based on Category)
 - Product Details
-- Rating
+- Rating with Review
+- View All Reviews
+- Filtering Reviews
 - Getting Deal of the Day
 - Cart
 - Checking out with Google/Apple Pay
@@ -19,32 +21,32 @@ The app is under heavy development
 - Sign Out
 - Admin Panel
     - Viewing All Products
-    - Filter Products by Category
+    - Filtering Products by Category
     - Adding Products
     - Editing Products
     - Deleting Products
     - Viewing All Orders
-    - Filter Orders By Status
+    - Filtering Orders By Status
     - Changing Order Status
     - Viewing Total Earnings
     - Viewing Category Based Earnings (on Graph)
 
 
 ## Running Locally
-After cloning this repository, migrate to ```flutter-amazon-clone-tutorial``` folder. Then, follow the following steps:
+After cloning this repository, migrate to ```LCD-Shopping``` folder. Then, follow the following steps:
 - Create MongoDB Project & Cluster
 - Click on Connect, follow the process where you will get the uri.
 - Head to ```lib/constants/global_variables.dart``` file, replace <yourip> with your IP Address. 
 - Create Cloudinary Project, enable unsigned operation in settings.
 - Config environment files:
-  - .env: 
+  - .env: Cloudinary config
 ```
 CLOUD_NAME=
 UPLOAD_PRESET=
 API_KEY=
 API_SECRET=
 ```
- - server/.env: Your database uri
+  - server/.env: Your database uri
 ```
 DB=
 ```
