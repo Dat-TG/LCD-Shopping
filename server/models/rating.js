@@ -11,6 +11,18 @@ const ratingSchema = mongoose.Schema({
     content: {
         type: String,
         default: ''
+    },
+    userName: {
+        type: String,
+        require: true,
+    },
+    time: {
+        type: Number,
+        require: true,
+    },
+    avatar: {
+        type: String,
+        default: ''
     }
 })
 

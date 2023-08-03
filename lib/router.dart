@@ -14,8 +14,10 @@ import 'package:shopping/features/home/screens/home_screen.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
+import 'package:shopping/features/product-details/screens/rating_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/order.dart';
+import 'package:shopping/models/rating.dart';
 
 import 'models/product.dart';
 
@@ -106,6 +108,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => EditProductScreen(product: product),
+      );
+    case RatingDetailsScreen.routeName:
+      final List<List<Rating>> stars =
+          routeSettings.arguments as List<List<Rating>>;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => RatingDetailsScreen(stars: stars),
       );
     default:
       return MaterialPageRoute(

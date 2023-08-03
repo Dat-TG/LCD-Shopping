@@ -7,9 +7,11 @@ import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/common/widgets/stars.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
+import 'package:shopping/features/product-details/screens/rating_details_screen.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/product.dart';
+import 'package:shopping/models/rating.dart';
 import 'package:shopping/providers/user_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -22,6 +24,7 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  List<List<Rating>> stars = [[], [], [], [], [], []];
   double avgRating = 0;
   double myRating = 0;
   double totalRating = 0;
@@ -44,6 +47,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     totalRating = 0;
     for (int i = 0; i < widget.product.ratings!.length; i++) {
       totalRating += widget.product.ratings![i].rating;
+      stars[(widget.product.ratings![i].rating - 1).toInt()]
+          .add(widget.product.ratings![i]);
       if (widget.product.ratings![i].userId ==
           Provider.of<UserProvider>(context, listen: false).user.id) {
         myRating = widget.product.ratings![i].rating;
@@ -67,6 +72,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   void initState() {
     super.initState();
+    stars[5] = widget.product.ratings!;
     checkRating(widget.product);
     calculate();
     setState(() {});
@@ -250,7 +256,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         RatingBar.builder(
                           initialRating: myRating,
                           minRating: 1,
-                          allowHalfRating: true,
+                          allowHalfRating: false,
                           direction: Axis.horizontal,
                           itemCount: 5,
                           itemPadding:
@@ -287,6 +293,109 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     ),
                   )
                 : const SizedBox(),
+            Container(
+              color: Colors.black12,
+              height: 5,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Ratings and reviews',
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(
+                              context, RatingDetailsScreen.routeName,
+                              arguments: stars);
+                        },
+                        icon: const Icon(
+                          Icons.arrow_forward,
+                          size: 30,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Text(
+                              avgRating.toString(),
+                              style: const TextStyle(
+                                fontSize: 60,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Stars(rating: avgRating),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 5),
+                              child: Text(
+                                widget.product.ratings!.length.toString(),
+                              ),
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              for (int i = 4; i >= 0; i--)
+                                Row(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(right: 10),
+                                      child: Text((i + 1).toString()),
+                                    ),
+                                    SizedBox(
+                                      height: 10,
+                                      width: 200,
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: LinearProgressIndicator(
+                                          color: GlobalVariables
+                                              .selectedNavBarColor,
+                                          backgroundColor: Colors.black12,
+                                          value: (widget
+                                                  .product.ratings!.isNotEmpty)
+                                              ? stars[i].length /
+                                                  widget.product.ratings!.length
+                                              : 0.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            )
           ],
         ),
       ),

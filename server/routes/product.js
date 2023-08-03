@@ -28,7 +28,7 @@ router.get('/get', auth, async (req, res) => {
 // Rate a product
 router.post('/rating', auth, async (req, res) => {
     try {
-        const {id, rating, content}=req.body;
+        const {id, rating, content, userName, avatar}=req.body;
         let product=await Product.findById(id);
         for (let i=0;i<product.ratings.length;i++) {
             if (product.ratings[i].userId==req.user) {
@@ -39,7 +39,10 @@ router.post('/rating', auth, async (req, res) => {
         const ratingSchema={
             userId: req.user,
             rating,
-            content
+            content,
+            time: new Date().getTime(),
+            userName,
+            avatar
         }
         product.ratings.push(ratingSchema);
         product=await product.save();
