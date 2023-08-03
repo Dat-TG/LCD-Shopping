@@ -59,4 +59,31 @@ class ProductDetailsServices {
       showSnackBar(context, e.toString());
     }
   }
+
+  Future<bool> isValidRating({
+    required BuildContext context,
+    required Product product,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    bool isValid = false;
+    try {
+      http.Response res = await http.get(
+          Uri.parse('$uri/product/check-rating/${product.id}'),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.token
+          });
+      if (context.mounted) {
+        httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () async {
+              isValid = jsonDecode(res.body)['isValid'] as bool;
+            });
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return isValid;
+  }
 }

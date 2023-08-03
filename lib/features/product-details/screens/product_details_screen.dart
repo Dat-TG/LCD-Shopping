@@ -24,6 +24,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double avgRating = 0;
   double myRating = 0;
   double totalRating = 0;
+  bool isValid = false;
 
   final ProductDetailsServices productDetailsServices =
       ProductDetailsServices();
@@ -55,9 +56,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     productDetailsServices.addToCart(context: context, product: widget.product);
   }
 
+  void checkRating(Product product) async {
+    isValid = await productDetailsServices.isValidRating(
+        context: context, product: product);
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
+    checkRating(widget.product);
     calculate();
     setState(() {});
   }
@@ -222,37 +230,45 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               color: Colors.black12,
               height: 5,
             ),
-            const Padding(
-              padding: EdgeInsets.all(10),
-              child: Text(
-                "Rate The Product",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-            RatingBar.builder(
-                initialRating: myRating,
-                minRating: 1,
-                allowHalfRating: true,
-                direction: Axis.horizontal,
-                itemCount: 5,
-                itemPadding: const EdgeInsets.symmetric(horizontal: 4),
-                itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: GlobalVariables.secondaryColor,
-                    ),
-                onRatingUpdate: (rating) {
-                  productDetailsServices.rateProduct(
-                      context: context,
-                      product: widget.product,
-                      rating: rating);
-                  totalRating = totalRating - myRating + rating;
-                  myRating = rating;
-                  avgRating = totalRating / widget.product.ratings!.length;
-                  setState(() {});
-                })
+            (isValid)
+                ? Column(
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          "Rate The Product",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                      ),
+                      RatingBar.builder(
+                          initialRating: myRating,
+                          minRating: 1,
+                          allowHalfRating: true,
+                          direction: Axis.horizontal,
+                          itemCount: 5,
+                          itemPadding:
+                              const EdgeInsets.symmetric(horizontal: 4),
+                          itemBuilder: (context, _) => const Icon(
+                                Icons.star,
+                                color: GlobalVariables.secondaryColor,
+                              ),
+                          onRatingUpdate: (rating) {
+                            productDetailsServices.rateProduct(
+                                context: context,
+                                product: widget.product,
+                                rating: rating);
+                            totalRating = totalRating - myRating + rating;
+                            myRating = rating;
+                            avgRating =
+                                totalRating / widget.product.ratings!.length;
+                            setState(() {});
+                          })
+                    ],
+                  )
+                : const SizedBox(),
           ],
         ),
       ),

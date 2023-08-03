@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {Product} = require('../models/product');
 const auth = require('../middlewares/auth');
+const Order = require('../models/order');
 
 // Get all products of a category
 // /get?category=categoryName
@@ -67,5 +68,20 @@ router.get('/deal-of-day', auth, async (req, res) => {
     }
 })
 
+// Check for rating
+router.get("/check-rating/:productId", auth, async (req, res) => {
+    try {
+      const productId=req.params.productId;
+      const userId=req.user;
+      const isValid=await Order.find({
+        userId: userId,
+        "products.product._id": productId
+      });
+      if (isValid.length>0) res.json({isValid: true});
+      else res.json({isValid: false});
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
 
 module.exports = router;
