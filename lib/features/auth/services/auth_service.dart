@@ -1,6 +1,7 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:io';
 
+import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,10 +9,11 @@ import 'package:shopping/common/widgets/bottom_bar.dart';
 import 'package:shopping/constants/errors_handling.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
-import 'package:shopping/features/account/screens/account_screen.dart';
+import 'package:shopping/features/admin/services/admin_services.dart';
 import 'package:shopping/models/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:shopping/providers/user_provider.dart';
+import 'package:cloudinary_sdk/cloudinary_sdk.dart' as cloudinary_sdk;
 
 class AuthService {
   // Sign Up
@@ -22,14 +24,16 @@ class AuthService {
       required String name}) async {
     try {
       User user = User(
-          id: '',
-          email: email,
-          name: name,
-          password: password,
-          address: '',
-          type: '',
-          token: '',
-          cart: []);
+        id: '',
+        email: email,
+        name: name,
+        password: password,
+        address: '',
+        type: '',
+        token: '',
+        cart: [],
+        avatar: '',
+      );
       http.Response res = await http.post(Uri.parse('$uri/user/signup'),
           body: user.toJson(),
           headers: <String, String>{
@@ -116,11 +120,37 @@ class AuthService {
       {required BuildContext context,
       required String email,
       required String address,
-      required String name}) async {
+      required String name,
+      File? image}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final cloudinary1 = cloudinary_sdk.Cloudinary.full(
+      apiKey: AdminServices.apiKey,
+      apiSecret: AdminServices.apiSecret,
+      cloudName: AdminServices.cloudName,
+    );
     try {
       User user = userProvider.user
           .copyWith(address: address, email: email, name: name);
+      final cloudinary =
+          CloudinaryPublic(AdminServices.cloudName, AdminServices.uploadPreset);
+      if (image != null) {
+        CloudinaryResponse res = await cloudinary.uploadFile(
+            CloudinaryFile.fromFile(image.path,
+                folder: 'LCDShopping/user/$email'));
+        String old = user.avatar;
+        user = user.copyWith(avatar: res.secureUrl);
+        if (old.isNotEmpty) {
+          final response = await cloudinary1.deleteResources(
+              urls: [old],
+              resourceType: cloudinary_sdk.CloudinaryResourceType.image);
+          if (response.isSuccessful) {
+            // ignore: unused_local_variable
+            Map<String, dynamic> deleted = response
+                .deleted!; //in deleted Map you will find all the public ids and the status 'deleted'
+          }
+        }
+      }
+
       http.Response res = await http.patch(
           Uri.parse('$uri/user/edit-information'),
           body: user.toJson(),

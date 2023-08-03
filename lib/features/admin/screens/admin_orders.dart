@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shopping/common/widgets/loader.dart';
 import 'package:shopping/constants/global_variables.dart';
-import 'package:shopping/features/account/widgets/single_product.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
 import 'package:shopping/models/order.dart';

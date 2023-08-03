@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shopping/constants/global_variables.dart';
-import 'package:shopping/features/admin/screens/admin_home_screen.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
-import 'package:shopping/models/product.dart';
 
 enum MenuProductOptions { preview, edit, delete }
 

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/features/account/screens/edit_account_screen.dart';
-import 'package:shopping/features/account/screens/see_all_orders.dart';
 import 'package:shopping/features/account/services/account_services.dart';
 import 'package:shopping/features/account/widgets/list_tile_account.dart';
 import 'package:shopping/features/order-details/screens/order_details_screen.dart';
@@ -30,11 +29,12 @@ class _AccountInfoState extends State<AccountInfo> {
         arguments: order);
   }
 
-  void naviagteToEditAccountScreen(String email, String name, String address) {
+  void naviagteToEditAccountScreen(
+      String email, String name, String address, String avatar) {
     Navigator.pushNamed(
       context,
       EditAccountScreen.routeName,
-      arguments: EditAccountScreenArguments(email, name, address),
+      arguments: EditAccountScreenArguments(email, name, address, avatar),
     );
   }
 
@@ -60,7 +60,7 @@ class _AccountInfoState extends State<AccountInfo> {
               padding: const EdgeInsets.only(right: 15),
               child: GestureDetector(
                 onTap: () => naviagteToEditAccountScreen(
-                    user.email, user.name, user.address),
+                    user.email, user.name, user.address, user.avatar),
                 child: Text(
                   'Edit',
                   style: TextStyle(
@@ -70,6 +70,15 @@ class _AccountInfoState extends State<AccountInfo> {
               ),
             )
           ],
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        CircleAvatar(
+          backgroundImage: (user.avatar.isNotEmpty)
+              ? NetworkImage(user.avatar) as ImageProvider
+              : const AssetImage('assets/images/avatar.png'),
+          radius: 50,
         ),
         Padding(
           padding: const EdgeInsets.all(8.0),

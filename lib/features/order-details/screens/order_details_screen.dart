@@ -197,6 +197,13 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
                             widget.order.products[i].images[0],
                             height: 120,
                             width: 120,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Image.asset(
+                                'assets/images/image_not_available.png',
+                                height: 120,
+                                width: 120,
+                              );
+                            },
                           ),
                           const SizedBox(
                             width: 10,

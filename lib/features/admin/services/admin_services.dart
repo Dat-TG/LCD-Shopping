@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:cloudinary_public/cloudinary_public.dart';
-import 'package:cloudinary_sdk/cloudinary_sdk.dart' as cloudinarySDK;
+import 'package:cloudinary_sdk/cloudinary_sdk.dart' as cloudinary_sdk;
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -19,10 +18,10 @@ import '../../../models/product.dart';
 import '../models/sales.dart';
 
 class AdminServices {
-  String cloudName = dotenv.get('CLOUD_NAME');
-  String uploadPreset = dotenv.get('UPLOAD_PRESET');
-  String apiKey = dotenv.get('API_KEY');
-  String apiSecret = dotenv.get('API_SECRET');
+  static String cloudName = dotenv.get('CLOUD_NAME');
+  static String uploadPreset = dotenv.get('UPLOAD_PRESET');
+  static String apiKey = dotenv.get('API_KEY');
+  static String apiSecret = dotenv.get('API_SECRET');
   void sellProduct(
       {required BuildContext context,
       required String name,
@@ -109,7 +108,7 @@ class AdminServices {
       required Product product,
       required VoidCallback onSuccess}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
-    final cloudinary = cloudinarySDK.Cloudinary.full(
+    final cloudinary = cloudinary_sdk.Cloudinary.full(
       apiKey: apiKey,
       apiSecret: apiSecret,
       cloudName: cloudName,
@@ -117,8 +116,9 @@ class AdminServices {
     try {
       final response = await cloudinary.deleteResources(
           urls: product.images,
-          resourceType: cloudinarySDK.CloudinaryResourceType.image);
+          resourceType: cloudinary_sdk.CloudinaryResourceType.image);
       if (response.isSuccessful) {
+        // ignore: unused_local_variable
         Map<String, dynamic> deleted = response
             .deleted!; //in deleted Map you will find all the public ids and the status 'deleted'
       }
@@ -250,7 +250,7 @@ class AdminServices {
       required List<File> images,
       required List<String> removeOldImages}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false).user;
-    final cloudinary1 = cloudinarySDK.Cloudinary.full(
+    final cloudinary1 = cloudinary_sdk.Cloudinary.full(
       apiKey: apiKey,
       apiSecret: apiSecret,
       cloudName: cloudName,
@@ -265,8 +265,9 @@ class AdminServices {
       }
       final response = await cloudinary1.deleteResources(
           urls: removeOldImages,
-          resourceType: cloudinarySDK.CloudinaryResourceType.image);
+          resourceType: cloudinary_sdk.CloudinaryResourceType.image);
       if (response.isSuccessful) {
+        // ignore: unused_local_variable
         Map<String, dynamic> deleted = response
             .deleted!; //in deleted Map you will find all the public ids and the status 'deleted'
       }

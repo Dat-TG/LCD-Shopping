@@ -63,7 +63,7 @@ router.post('/tokenIsValid', async (req, res) => {
 // Edit Information
 router.patch('/edit-information', auth, async (req, res) => {
     try {
-        const { name, email, address } = req.body;
+        const { name, email, address, avatar } = req.body;
         let user = await User.findById(req.user);
         if (!user) {
             return res.status(400).json({'msg': 'User not found'});
@@ -71,6 +71,7 @@ router.patch('/edit-information', auth, async (req, res) => {
         user.name=name;
         user.email=email;
         user.address=address;
+        user.avatar=avatar;
         user = await user.save();
         const token = jwt.sign({ id: user._id }, 'secret');
         res.json({token, ...user._doc});

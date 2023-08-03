@@ -93,6 +93,7 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           address: args.address,
           email: args.email,
           name: args.name,
+          avatar: args.avatar,
         ),
       );
     case AccountScreen.routeName:

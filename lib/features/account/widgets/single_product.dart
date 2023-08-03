@@ -21,6 +21,13 @@ class SingleProduct extends StatelessWidget {
             img,
             fit: BoxFit.fitHeight,
             width: 180,
+            errorBuilder: (context, error, stackTrace) {
+              return Image.asset(
+                'assets/images/image_not_available.png',
+                fit: BoxFit.fitHeight,
+                width: 180,
+              );
+            },
           ),
         ),
       ),
