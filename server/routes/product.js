@@ -15,7 +15,7 @@ router.get('/get', auth, async (req, res) => {
             await Product.find({
                 category: req.query.category
             })
-            :
+            : (req.query.id)? await Product.findById(req.query.id):
             await Product.find({
                 name: { $regex: req.query.searchQuery, $options: "i" },
             });
@@ -79,7 +79,8 @@ router.get("/check-rating/:productId", auth, async (req, res) => {
       const userId=req.user;
       const isValid=await Order.find({
         userId: userId,
-        "products.product._id": productId
+        "products.product._id": productId,
+        status: 3 // Completed
       });
       if (isValid.length>0) res.json({isValid: true});
       else res.json({isValid: false});
@@ -87,5 +88,7 @@ router.get("/check-rating/:productId", auth, async (req, res) => {
       res.status(500).json({ error: e.message });
     }
   });
+
+
 
 module.exports = router;

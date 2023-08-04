@@ -104,4 +104,35 @@ class ProductDetailsServices {
     }
     return isValid;
   }
+
+  Future<Product> getProduct(
+      {required BuildContext context, required String id}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false).user;
+    Product product = Product(
+      name: '',
+      description: '',
+      price: 0,
+      quantity: 0,
+      category: '',
+      images: [],
+    );
+    try {
+      http.Response res = await http
+          .get(Uri.parse('$uri/product/get?id=$id'), headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'x-auth-token': userProvider.token
+      });
+      if (context.mounted) {
+        httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () async {
+              product = Product.fromJson(res.body);
+            });
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return product;
+  }
 }

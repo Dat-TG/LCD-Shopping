@@ -3,9 +3,11 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/constants/utils.dart';
 import 'package:shopping/features/admin/services/admin_services.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
+import 'package:shopping/features/product-details/services/product_details_services.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/order.dart';
 import 'package:shopping/models/product.dart';
@@ -29,9 +31,21 @@ class _OrderDetailsScreenState extends State<OrderDetailsScreen> {
         arguments: searchQuery);
   }
 
-  void navigateToProductDetails(Product product) {
-    Navigator.pushNamed(context, ProductDetailsScreen.routeName,
-        arguments: product);
+  void navigateToProductDetails(Product product) async {
+    final ProductDetailsServices productDetailsServices =
+        ProductDetailsServices();
+    Product curProduct = await productDetailsServices.getProduct(
+        context: context, id: product.id!);
+    if (mounted) {
+      if (curProduct.name.isNotEmpty) {
+        Navigator.pushNamed(context, ProductDetailsScreen.routeName,
+            arguments: curProduct);
+      } else {
+        Navigator.pushNamed(context, ProductDetailsScreen.routeName,
+            arguments: product);
+        showSnackBar(context, 'This product is now not available');
+      }
+    }
   }
 
   void naviagteToSpeechScreen() {

@@ -276,6 +276,14 @@ class _AdminOrdersState extends State<AdminOrders> {
                                           orders![i].products[0].images[0],
                                           height: 120,
                                           width: 120,
+                                          errorBuilder:
+                                              (context, error, stackTrace) {
+                                            return Image.asset(
+                                              'assets/images/image_not_available.png',
+                                              width: 120,
+                                              height: 120,
+                                            );
+                                          },
                                         ),
                                         const SizedBox(
                                           width: 10,

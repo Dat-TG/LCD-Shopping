@@ -10,6 +10,9 @@ router.post('/add-to-cart', auth, async (req, res) => {
     try {
         const { id } = req.body;
         const product = await Product.findById(id);
+        if (!product) {
+          return res.status(400).json({msg: 'This product is now not available'});
+        }
         let user = await User.findById(req.user);
         if (user.cart.length == 0) {
             user.cart.push({
