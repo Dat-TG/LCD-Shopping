@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping/features/cart/screens/cart_screen.dart';
 import 'package:shopping/features/cart/services/cart_services.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
 import 'package:shopping/models/product.dart';
@@ -27,6 +28,7 @@ class _CartItemState extends State<CartItem> {
   }
 
   void removeItem(Product product) {
+    CartScreen.isCheck.removeAt(widget.index);
     cartServices.removeItemFromCart(context: context, product: product);
   }
 
@@ -43,8 +45,8 @@ class _CartItemState extends State<CartItem> {
               Image.network(
                 product.images[0],
                 fit: BoxFit.contain,
-                height: 135,
-                width: 135,
+                height: 100,
+                width: 100,
               ),
               Column(
                 children: [
@@ -53,8 +55,9 @@ class _CartItemState extends State<CartItem> {
                     width: 235,
                     child: Text(
                       product.name,
-                      style: const TextStyle(fontSize: 16),
-                      maxLines: 2,
+                      style: const TextStyle(fontSize: 14),
+                      maxLines: 5,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Container(
@@ -72,7 +75,7 @@ class _CartItemState extends State<CartItem> {
                     width: 235,
                     child: const Text(
                       "Eligibale for FREE Shipping",
-                      style: TextStyle(fontSize: 16),
+                      style: TextStyle(fontSize: 14),
                       maxLines: 2,
                     ),
                   ),
@@ -81,7 +84,7 @@ class _CartItemState extends State<CartItem> {
                     width: 235,
                     child: const Text(
                       "In Stock",
-                      style: TextStyle(fontSize: 16, color: Colors.teal),
+                      style: TextStyle(fontSize: 14, color: Colors.teal),
                       maxLines: 2,
                     ),
                   ),
