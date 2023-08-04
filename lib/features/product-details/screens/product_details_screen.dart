@@ -29,6 +29,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   double myRating = 0;
   double totalRating = 0;
   bool isValid = false;
+  bool haveRated = false;
+  String myComment = '';
   final TextEditingController _contentController = TextEditingController();
 
   final ProductDetailsServices productDetailsServices =
@@ -52,6 +54,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
       if (widget.product.ratings![i].userId ==
           Provider.of<UserProvider>(context, listen: false).user.id) {
         myRating = widget.product.ratings![i].rating;
+        myComment = widget.product.ratings![i].content;
+        haveRated = true;
       }
     }
     if (totalRating != 0) {
@@ -243,52 +247,81 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     padding: const EdgeInsets.all(10.0),
                     child: Column(
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(10),
+                        Padding(
+                          padding: const EdgeInsets.all(10),
                           child: Text(
-                            "Rate The Product",
-                            style: TextStyle(
+                            (haveRated) ? "Your Rating" : "Rate The Product",
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
                             ),
                           ),
                         ),
-                        RatingBar.builder(
-                          initialRating: myRating,
-                          minRating: 1,
-                          allowHalfRating: false,
-                          direction: Axis.horizontal,
-                          itemCount: 5,
-                          itemPadding:
-                              const EdgeInsets.symmetric(horizontal: 4),
-                          itemBuilder: (context, _) => const Icon(
-                            Icons.star,
-                            color: GlobalVariables.secondaryColor,
-                          ),
-                          onRatingUpdate: (rating) {
-                            setState(() {
-                              myRating = rating;
-                            });
-                          },
-                        ),
-                        CustomTextField(
-                          controller: _contentController,
-                          hint: 'Write your comment',
-                          maxLines: 3,
-                        ),
+                        (haveRated)
+                            ? Stars(
+                                rating: myRating,
+                                itemSize: 40,
+                              )
+                            : RatingBar.builder(
+                                initialRating: myRating,
+                                minRating: 1,
+                                allowHalfRating: false,
+                                direction: Axis.horizontal,
+                                itemCount: 5,
+                                itemPadding:
+                                    const EdgeInsets.symmetric(horizontal: 4),
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: GlobalVariables.secondaryColor,
+                                ),
+                                onRatingUpdate: (rating) {
+                                  setState(() {
+                                    myRating = rating;
+                                  });
+                                },
+                              ),
+                        (haveRated)
+                            ? Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(10),
+                                decoration: BoxDecoration(
+                                  border: const Border.fromBorderSide(
+                                    BorderSide(
+                                        color: Colors.black38,
+                                        width: 1,
+                                        strokeAlign: 1),
+                                  ),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Text(myComment))
+                            : CustomTextField(
+                                controller: _contentController,
+                                hint: 'Write your comment',
+                                maxLines: 3,
+                              ),
                         const SizedBox(
                           height: 10,
                         ),
-                        CustomButton(
-                          text: 'Send Review',
-                          onTap: () {
-                            productDetailsServices.rateProduct(
-                                context: context,
-                                product: widget.product,
-                                rating: myRating,
-                                content: _contentController.text);
-                          },
-                        )
+                        (haveRated)
+                            ? CustomButton(
+                                text: 'Edit Review',
+                                onTap: () {
+                                  setState(() {
+                                    haveRated = false;
+                                    _contentController.text = myComment;
+                                  });
+                                },
+                              )
+                            : CustomButton(
+                                text: 'Send Review',
+                                onTap: () {
+                                  productDetailsServices.rateProduct(
+                                      context: context,
+                                      product: widget.product,
+                                      rating: myRating,
+                                      content: _contentController.text);
+                                },
+                              )
                       ],
                     ),
                   )

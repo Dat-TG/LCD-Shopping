@@ -4,7 +4,8 @@ import 'package:shopping/constants/global_variables.dart';
 
 class Stars extends StatelessWidget {
   final double rating;
-  const Stars({super.key, required this.rating});
+  final double? itemSize;
+  const Stars({super.key, required this.rating, this.itemSize});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,7 @@ class Stars extends StatelessWidget {
       itemCount: 5,
       rating: rating,
       direction: Axis.horizontal,
-      itemSize: 15,
+      itemSize: (itemSize != null) ? itemSize! : 15,
       itemBuilder: (context, _) => const Icon(
         Icons.star,
         color: GlobalVariables.secondaryColor,
