@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/buy-now/screens/address_by_now.dart';
 import 'package:shopping/models/product.dart';
 
 class BuyNowScreen extends StatefulWidget {
@@ -14,6 +15,7 @@ class BuyNowScreen extends StatefulWidget {
 }
 
 class _BuyNowScreenState extends State<BuyNowScreen> {
+  double subtotal = 0;
   int _quantity = 1;
   final TextEditingController _quantityController = TextEditingController();
 
@@ -21,6 +23,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
   void initState() {
     super.initState();
     _quantityController.text = '1';
+    subtotal = widget.product.price;
   }
 
   @override
@@ -122,6 +125,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                         if (_quantity > 1) {
                           setState(() {
                             _quantity--;
+                            subtotal = widget.product.price * _quantity;
                           });
                         }
                       },
@@ -158,6 +162,8 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                                     setState(() {
                                       _quantity =
                                           int.parse(_quantityController.text);
+                                      subtotal =
+                                          widget.product.price * _quantity;
                                     });
                                     Navigator.pop(context);
                                   },
@@ -191,6 +197,7 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                       onTap: () {
                         setState(() {
                           _quantity++;
+                          subtotal = widget.product.price * _quantity;
                         });
                       },
                       child: Container(
@@ -206,13 +213,34 @@ class _BuyNowScreenState extends State<BuyNowScreen> {
                   ],
                 ),
               ),
+              Row(
+                children: [
+                  const Text(
+                    'Subtotal: ',
+                    style: TextStyle(
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    '\$${subtotal.toStringAsFixed(2)}',
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  )
+                ],
+              ),
             ],
           ),
           Padding(
             padding: const EdgeInsets.all(20),
             child: CustomButton(
               text: 'Next',
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, AddressBuyNowScreen.routeName,
+                    arguments: AddressBuyNowScreenArguments(
+                        subtotal.toString(), widget.product.id!, _quantity));
+              },
             ),
           )
         ],

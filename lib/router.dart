@@ -9,6 +9,7 @@ import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/admin/screens/edit_product_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
+import 'package:shopping/features/buy-now/screens/address_by_now.dart';
 import 'package:shopping/features/buy-now/screens/buy_now_screen.dart';
 import 'package:shopping/features/cart/screens/order_preview.dart';
 import 'package:shopping/features/home/screens/category_screen.dart';
@@ -129,6 +130,17 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => BuyNowScreen(product: product),
+      );
+    case AddressBuyNowScreen.routeName:
+      final AddressBuyNowScreenArguments args =
+          routeSettings.arguments as AddressBuyNowScreenArguments;
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => AddressBuyNowScreen(
+          totalAmount: args.totalAmount,
+          productId: args.productId,
+          quantity: args.quantity,
+        ),
       );
     default:
       return MaterialPageRoute(

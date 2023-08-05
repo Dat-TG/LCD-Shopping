@@ -147,6 +147,45 @@ router.post("/order", auth, async (req, res) => {
   });
 
 
+// buy now
+router.post("/buy-now", auth, async (req, res) => {
+  try {
+    const { totalPrice, address, productId, quantity } = req.body;
+    let dbProduct=await Product.findById(productId);
+    if (!dbProduct) {
+      return res.status(400).json({msg: `Product ${dbProduct.name}  not found`});
+    }
+
+    if (dbProduct.quantity>=quantity) {
+      dbProduct.quantity-=quantity;
+      dbProduct=await dbProduct.save();
+    } else {
+      return res.status(400).json({msg: `Product ${dbProduct.name} does not have enough quantity`});
+    }
+
+    let products=[];
+    products.push({
+      product: dbProduct,
+      quantity: quantity
+    });
+
+    let order=new Order({
+      products,
+      totalPrice,
+      address,
+      userId: req.user,
+      orderedAt: new Date().getTime(),
+    });
+
+    order=await order.save();
+
+    res.json(dbProduct);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+
 // get all orders
 router.get("/all-orders", auth, async (req, res) => {
     try {
