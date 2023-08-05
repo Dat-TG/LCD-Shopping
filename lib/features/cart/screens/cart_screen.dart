@@ -186,6 +186,7 @@ class _CartScreenState extends State<CartScreen> {
                         child: Row(
                           children: [
                             Checkbox(
+                              shape: const CircleBorder(),
                               value: CartScreen.isCheck[index],
                               onChanged: (value) {
                                 setState(() {

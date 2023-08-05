@@ -103,9 +103,16 @@ router.post("/save-user-address", auth, async (req, res) => {
 // order products
 router.post("/order", auth, async (req, res) => {
     try {
-      const { cart, totalPrice, address } = req.body;
+      const { cart, totalPrice, address, isCheck } = req.body;
       let products=[];
+      let newCart=[];
       for (let i=0;i<cart.length;i++) {
+        if (isCheck[i]==false) {
+          newCart.push(cart[i]);
+        }
+      }
+      for (let i=0;i<cart.length;i++) {
+        if (isCheck[i]==false) continue;
         let product=await Product.findById(cart[i].product._id);
         if (product.quantity>=cart[i].quantity) {
             product.quantity-=cart[i].quantity;
@@ -120,7 +127,7 @@ router.post("/order", auth, async (req, res) => {
       }
 
       let user=await User.findById(req.user);
-      user.cart=[];
+      user.cart=newCart;
       await user.save();
 
       let order=new Order({
@@ -133,7 +140,7 @@ router.post("/order", auth, async (req, res) => {
 
       order=await order.save();
 
-      res.json(order);
+      res.json(newCart);
     } catch (e) {
       res.status(500).json({ error: e.message });
     }
@@ -143,7 +150,7 @@ router.post("/order", auth, async (req, res) => {
 // get all orders
 router.get("/all-orders", auth, async (req, res) => {
     try {
-      const orders=await Order.find({userId: req.user});
+      const orders=await Order.find({userId: req.user}).sort({orderedAt: -1});
       res.json(orders);
     } catch (e) {
       res.status(500).json({ error: e.message });
@@ -156,8 +163,8 @@ router.get("/get-orders", auth, async (req, res) => {
       const status=req.query.status;
       const userId=req.user;
       let orders=null;
-      if (status>-1) orders = await Order.find({status: status, userId: userId});
-      else orders=await Order.find({userId: userId});
+      if (status>-1) orders = await Order.find({status: status, userId: userId}).sort({orderedAt: -1});
+      else orders=await Order.find({userId: userId}).sort({orderedAt: -1});
       res.json(orders);
     } catch (e) {
       res.status(500).json({ error: e.message });

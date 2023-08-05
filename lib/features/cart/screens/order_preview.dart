@@ -84,6 +84,11 @@ class OrderPreview extends StatelessWidget {
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 5,
                                     ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 5),
+                                      child: Text('\$${product.price}'),
+                                    ),
                                     Text('Qty: ${item['quantity']}'),
                                   ],
                                 ),
