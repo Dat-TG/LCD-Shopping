@@ -6,6 +6,7 @@ import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/common/widgets/stars.dart';
 import 'package:shopping/constants/global_variables.dart';
+import 'package:shopping/features/buy-now/screens/buy_now_screen.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/product-details/screens/rating_details_screen.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
@@ -43,6 +44,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   void naviagteToSpeechScreen() {
     Navigator.pushNamed(context, SpeechScreen.routeName);
+  }
+
+  void navigateToBuyNowScreen(Product product) {
+    Navigator.pushNamed(context, BuyNowScreen.routeName, arguments: product);
   }
 
   void calculate() {
@@ -226,7 +231,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               padding: const EdgeInsets.all(10.0),
               child: CustomButton(
                 text: 'Buy Now',
-                onTap: () {},
+                onTap: () {
+                  navigateToBuyNowScreen(widget.product);
+                },
               ),
             ),
             Padding(

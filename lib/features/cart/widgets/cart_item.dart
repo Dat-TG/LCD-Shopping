@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/features/cart/screens/cart_screen.dart';
 import 'package:shopping/features/cart/services/cart_services.dart';
 import 'package:shopping/features/product-details/services/product_details_services.dart';
@@ -17,6 +18,7 @@ class CartItem extends StatefulWidget {
 class _CartItemState extends State<CartItem> {
   final productServices = ProductDetailsServices();
   final cartServices = CartServices();
+  final TextEditingController _quantityController = TextEditingController();
 
   void increaseQuantity(Product product) {
     productServices.addToCart(context: context, product: product);
@@ -30,6 +32,17 @@ class _CartItemState extends State<CartItem> {
   void removeItem(Product product) {
     CartScreen.isCheck.removeAt(widget.index);
     cartServices.removeItemFromCart(context: context, product: product);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _quantityController.dispose();
   }
 
   @override
@@ -121,16 +134,56 @@ class _CartItemState extends State<CartItem> {
                         ),
                       ),
                     ),
-                    Container(
-                        width: 25,
-                        height: 25,
-                        decoration: BoxDecoration(
-                            border:
-                                Border.all(color: Colors.black12, width: 1.5),
-                            borderRadius: BorderRadius.circular(0),
-                            color: Colors.white),
-                        alignment: Alignment.center,
-                        child: Text(productCart['quantity'].toString())),
+                    InkWell(
+                      onTap: () {
+                        _quantityController.text =
+                            productCart['quantity'].toString();
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              contentPadding: const EdgeInsets.only(
+                                left: 20,
+                                top: 20,
+                                right: 20,
+                              ),
+                              title: const Text('Input Quantity'),
+                              content: CustomTextField(
+                                controller: _quantityController,
+                                hint: 'Enter quantity',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () {
+                                    updateQuantity(product,
+                                        int.parse(_quantityController.text));
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                                TextButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  child: const Text('Cancel'),
+                                )
+                              ],
+                            );
+                          },
+                        );
+                      },
+                      child: Container(
+                          constraints: const BoxConstraints(minWidth: 25),
+                          padding: const EdgeInsets.symmetric(horizontal: 5),
+                          height: 25,
+                          decoration: BoxDecoration(
+                              border:
+                                  Border.all(color: Colors.black12, width: 1.5),
+                              borderRadius: BorderRadius.circular(0),
+                              color: Colors.white),
+                          alignment: Alignment.center,
+                          child: Text(productCart['quantity'].toString())),
+                    ),
                     InkWell(
                       onTap: () => increaseQuantity(product),
                       child: Container(
