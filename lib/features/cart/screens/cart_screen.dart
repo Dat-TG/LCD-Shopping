@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shopping/common/widgets/custom_button.dart';
 import 'package:shopping/constants/global_variables.dart';
-import 'package:shopping/features/address/screens/address_screen.dart';
+import 'package:shopping/constants/utils.dart';
+import 'package:shopping/features/cart/screens/order_preview.dart';
 import 'package:shopping/features/cart/widgets/cart_item.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
 import 'package:shopping/features/home/widgets/address_box.dart';
@@ -26,12 +27,8 @@ class _CartScreenState extends State<CartScreen> {
         arguments: searchQuery);
   }
 
-  void naviagteToAddressScreen(double sum) {
-    Navigator.pushNamed(
-      context,
-      AddressScreen.routeName,
-      arguments: sum.toString(),
-    );
+  void navigateToOrderPreview() {
+    Navigator.pushNamed(context, OrderPreview.routeName, arguments: sum);
   }
 
   void naviagteToSpeechScreen() {
@@ -166,7 +163,14 @@ class _CartScreenState extends State<CartScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: CustomButton(
                     text: "Proceed to Buy ($chooseItems) items",
-                    onTap: () => naviagteToAddressScreen(sum),
+                    onTap: () {
+                      if (chooseItems == 0) {
+                        showSnackBar(
+                            context, 'Please select products you want to buy');
+                      } else {
+                        navigateToOrderPreview();
+                      }
+                    },
                     backgroundColor: Colors.yellow[600],
                     textColor: Colors.black,
                   ),

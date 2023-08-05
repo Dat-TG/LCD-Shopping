@@ -129,6 +129,11 @@ class _AddressScreenState extends State<AddressScreen> {
             decoration:
                 const BoxDecoration(gradient: GlobalVariables.appBarGradient),
           ),
+          title: const Text(
+            'Select Address',
+            style: TextStyle(color: Colors.black),
+          ),
+          centerTitle: true,
         ),
       ),
       body: SingleChildScrollView(

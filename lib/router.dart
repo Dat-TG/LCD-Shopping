@@ -9,6 +9,7 @@ import 'package:shopping/features/admin/screens/admin_screen.dart';
 import 'package:shopping/features/admin/screens/edit_product_screen.dart';
 import 'package:shopping/features/admin/widgets/admin_bottom_bar.dart';
 import 'package:shopping/features/auth/screens/auth_screen.dart';
+import 'package:shopping/features/cart/screens/order_preview.dart';
 import 'package:shopping/features/home/screens/category_screen.dart';
 import 'package:shopping/features/home/screens/home_screen.dart';
 import 'package:shopping/features/home/screens/speech_screen.dart';
@@ -115,6 +116,13 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
       return MaterialPageRoute(
         settings: routeSettings,
         builder: (context) => RatingDetailsScreen(stars: stars),
+      );
+
+    case OrderPreview.routeName:
+      double sum = double.parse(routeSettings.arguments.toString());
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => OrderPreview(sum: sum),
       );
     default:
       return MaterialPageRoute(
