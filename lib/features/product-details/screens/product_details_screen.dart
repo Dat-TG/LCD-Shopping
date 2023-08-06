@@ -90,6 +90,56 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          padding: const EdgeInsets.symmetric(
+            horizontal: 10,
+            vertical: 5,
+          ),
+          decoration: const BoxDecoration(
+              border: Border.fromBorderSide(
+                  BorderSide(color: Colors.black12, width: 1))),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              InkWell(
+                onTap: () {},
+                child: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.chat_bubble_outline_rounded),
+                    Text('Chat now'),
+                  ],
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  navigateToBuyNowScreen(widget.product);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text('Buy now'),
+              ),
+              ElevatedButton(
+                onPressed: addToCart,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow[600],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+                child: const Text(
+                  'Add to cart',
+                  style: TextStyle(color: Colors.black),
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(60),
           child: AppBar(
@@ -222,28 +272,6 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(widget.product.description),
-            ),
-            Container(
-              color: Colors.black12,
-              height: 5,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomButton(
-                text: 'Buy Now',
-                onTap: () {
-                  navigateToBuyNowScreen(widget.product);
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: CustomButton(
-                text: 'Add To Cart',
-                backgroundColor: const Color.fromRGBO(254, 216, 19, 1),
-                textColor: Colors.black,
-                onTap: addToCart,
-              ),
             ),
             Container(
               color: Colors.black12,

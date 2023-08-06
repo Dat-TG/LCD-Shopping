@@ -80,9 +80,25 @@ class _BottomBarState extends State<BottomBar> {
                                 : GlobalVariables.backgroundColor,
                             width: bottomBarBorderWidth))),
                 child: badges.Badge(
-                    badgeContent: Text(userCartLength.toString()),
+                    badgeContent: Container(
+                      padding: const EdgeInsets.all(
+                        5,
+                      ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: GlobalVariables.selectedNavBarColor,
+                      ),
+                      child: Text(
+                        userCartLength.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                     badgeStyle: const badges.BadgeStyle(
-                        elevation: 0, badgeColor: Colors.white),
+                        padding: EdgeInsets.all(0),
+                        elevation: 0,
+                        badgeColor: Colors.white),
                     child: const Icon(Icons.shopping_cart_outlined)),
               ),
               label: '')
