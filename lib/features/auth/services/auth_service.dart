@@ -24,16 +24,16 @@ class AuthService {
       required String name}) async {
     try {
       User user = User(
-        id: '',
-        email: email,
-        name: name,
-        password: password,
-        address: '',
-        type: '',
-        token: '',
-        cart: [],
-        avatar: '',
-      );
+          id: '',
+          email: email,
+          name: name,
+          password: password,
+          address: '',
+          type: '',
+          token: '',
+          cart: [],
+          avatar: '',
+          wishList: []);
       http.Response res = await http.post(Uri.parse('$uri/user/signup'),
           body: user.toJson(),
           headers: <String, String>{

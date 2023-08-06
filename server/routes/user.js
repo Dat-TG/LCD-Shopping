@@ -210,6 +210,38 @@ router.get("/get-orders", auth, async (req, res) => {
     }
   });
 
+// Add product to wishList
+router.post('/add-to-wishList', auth, async (req, res) => {
+  try {
+      const { id } = req.body;
+      const product = await Product.findById(id);
+      if (!product) {
+        return res.status(400).json({msg: 'This product is now not available'});
+      }
+      let user = await User.findById(req.user);
+      if (user.wishList.length == 0) {
+          user.wishList.push(id);
+      } else {
+          let isProductExist = false;
+          for (let i = 0; i < user.wishList.length; i++) {
+              if (user.wishList[i]==id) {
+                  isProductExist = true;
+                  user.wishList.splice(i, 1);
+                  break;
+              }
+          }
+          if (!isProductExist) {
+              user.wishList.push(id);
+          } 
+      }
+      user = await user.save();
+      res.json(user);
+
+  } catch (e) {
+      res.status(500).json({ error: e.message });
+  }
+})
+
 
 
 module.exports = router;

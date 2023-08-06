@@ -13,6 +13,7 @@ import 'package:shopping/features/product-details/services/product_details_servi
 import 'package:shopping/features/search/screens/search_screen.dart';
 import 'package:shopping/models/product.dart';
 import 'package:shopping/models/rating.dart';
+import 'package:shopping/models/user.dart';
 import 'package:shopping/providers/user_provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
@@ -72,6 +73,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     productDetailsServices.addToCart(context: context, product: widget.product);
   }
 
+  void addToWishList(bool isFavorite) {
+    productDetailsServices.addToWishList(
+        context: context, product: widget.product, isFavorite: isFavorite);
+  }
+
   void checkRating(Product product) async {
     isValid = await productDetailsServices.isValidRating(
         context: context, product: product);
@@ -89,6 +95,15 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = Provider.of<UserProvider>(context, listen: false).user;
+    bool isFavorite = false;
+    for (int i = 0; i < user.wishList.length; i++) {
+      if (user.wishList[i] == widget.product.id) {
+        isFavorite = true;
+        break;
+      }
+    }
+
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
         child: Container(
@@ -135,7 +150,17 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   'Add to cart',
                   style: TextStyle(color: Colors.black),
                 ),
-              )
+              ),
+              IconButton(
+                tooltip: 'Add to wish list',
+                onPressed: () => addToWishList(isFavorite),
+                icon: Icon(
+                  isFavorite ? Icons.favorite : Icons.favorite_border_outlined,
+                  color: isFavorite
+                      ? GlobalVariables.selectedNavBarColor
+                      : Colors.black,
+                ),
+              ),
             ],
           ),
         ),

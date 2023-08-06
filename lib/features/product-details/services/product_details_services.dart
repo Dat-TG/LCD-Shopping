@@ -135,4 +135,40 @@ class ProductDetailsServices {
     }
     return product;
   }
+
+  void addToWishList(
+      {required BuildContext context,
+      required Product product,
+      required bool isFavorite}) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    try {
+      http.Response res = await http.post(
+          Uri.parse('$uri/user/add-to-wishList'),
+          body: jsonEncode({'id': product.id}),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8',
+            'x-auth-token': userProvider.user.token
+          });
+      if (context.mounted) {
+        httpErrorHandle(
+            response: res,
+            context: context,
+            onSuccess: () async {
+              if (!isFavorite) {
+                showSnackBar(context, 'Add product to wish list successfully');
+              } else {
+                showSnackBar(
+                    context, 'Remove product from wish list successfully');
+              }
+              User user = userProvider.user.copyWith(
+                  wishList:
+                      List<String>.from(jsonDecode(res.body)['wishList']));
+
+              userProvider.setUserFromModel(user);
+            });
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+  }
 }

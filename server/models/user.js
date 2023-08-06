@@ -42,7 +42,12 @@ const userSchema = mongoose.Schema({
     avatar: {
         type: String,
         default: '',
-    }
+    },
+    wishList: [
+        {
+            type: String,
+        }
+    ]
 })
 
 const User=mongoose.model('User', userSchema);
