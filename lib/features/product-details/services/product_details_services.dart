@@ -139,7 +139,8 @@ class ProductDetailsServices {
   void addToWishList(
       {required BuildContext context,
       required Product product,
-      required bool isFavorite}) async {
+      required bool isFavorite,
+      VoidCallback? onSuccess}) async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     try {
       http.Response res = await http.post(
@@ -165,10 +166,29 @@ class ProductDetailsServices {
                       List<String>.from(jsonDecode(res.body)['wishList']));
 
               userProvider.setUserFromModel(user);
+              if (onSuccess != null) {
+                onSuccess();
+              }
             });
       }
     } catch (e) {
       showSnackBar(context, e.toString());
     }
+  }
+
+  // fetch wish list
+  Future<List<Product>> getWishList({required BuildContext context}) async {
+    final user = Provider.of<UserProvider>(context, listen: false).user;
+    List<Product> products = [];
+    try {
+      for (int i = 0; i < user.wishList.length; i++) {
+        Product product =
+            await getProduct(context: context, id: user.wishList[i]);
+        products.add(product);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return products;
   }
 }

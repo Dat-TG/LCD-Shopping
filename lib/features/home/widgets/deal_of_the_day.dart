@@ -27,7 +27,7 @@ class _DealOfTheDayState extends State<DealOfTheDay> {
     if (product != null && product!.name.isNotEmpty) {
       mainImg = product!.images[0];
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void navigateToProductDetails() {

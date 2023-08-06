@@ -5,7 +5,6 @@ import 'package:shopping/common/widgets/custom_textfield.dart';
 import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
 import 'package:shopping/features/address/services/address_services.dart';
-import 'package:shopping/models/product.dart';
 import 'package:shopping/payment_configurations.dart';
 import 'package:shopping/providers/user_provider.dart';
 

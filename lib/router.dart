@@ -19,6 +19,7 @@ import 'package:shopping/features/order-details/screens/order_details_screen.dar
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
 import 'package:shopping/features/product-details/screens/rating_details_screen.dart';
 import 'package:shopping/features/search/screens/search_screen.dart';
+import 'package:shopping/features/wish-list/screens/wish_list_screen.dart';
 import 'package:shopping/models/order.dart';
 import 'package:shopping/models/rating.dart';
 
@@ -141,6 +142,11 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
           productId: args.productId,
           quantity: args.quantity,
         ),
+      );
+    case WishListScreen.routeName:
+      return MaterialPageRoute(
+        settings: routeSettings,
+        builder: (context) => const WishListScreen(),
       );
     default:
       return MaterialPageRoute(

@@ -8,7 +8,6 @@ import 'package:shopping/constants/global_variables.dart';
 import 'package:shopping/constants/utils.dart';
 import 'package:shopping/features/cart/screens/cart_screen.dart';
 import 'package:shopping/features/product-details/screens/product_details_screen.dart';
-import 'package:shopping/models/product.dart';
 import 'package:shopping/models/user.dart';
 import 'package:shopping/providers/user_provider.dart';
 

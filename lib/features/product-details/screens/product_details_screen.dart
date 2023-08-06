@@ -81,7 +81,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   void checkRating(Product product) async {
     isValid = await productDetailsServices.isValidRating(
         context: context, product: product);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   @override

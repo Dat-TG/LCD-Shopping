@@ -26,7 +26,7 @@ class _OrdersState extends State<Orders> {
 
   void fetchAllOrders() async {
     orders = await accountServices.fetchAllOrders(context: context);
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   void naviagteToOrderDetails(Order order) {
